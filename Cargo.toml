@@ -1,0 +1,13 @@
+[package]
+name = "simulator"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+ndarray = "0.15.6"
+plotly = { version = "0.8.3", features = ["plotly_ndarray", "wasm"] }
+yew = { version = "0.21.0", features = ["csr"] }
+yew-hooks = "0.3.3"
+yew-plotly = { version = "0.3.0" }
+control-box = { path = "../control-box", features = [ "std" ]}
+yew-accordion = "0.1.2"
