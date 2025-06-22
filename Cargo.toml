@@ -11,3 +11,8 @@ yew-hooks = "0.3.3"
 yew-plotly = { version = "0.3.0" }
 control-box = { path = "../control-box", features = [ "std" ]}
 yew-accordion = "0.1.2"
+wasm-logger = "0.2.0"
+console_error_panic_hook = "0.1.7"
+yew-router = "0.18.0"
+wasm-bindgen = "0.2.100"
+input-rs = { version = "0.2.5", features = ["yew"] }
