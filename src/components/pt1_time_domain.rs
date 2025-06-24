@@ -20,24 +20,24 @@ pub struct PlotlyPT1Props {
     t1: u32, // T1 in milliseconds
     #[prop_or(1_u32)]
     ts: u32, // Sampling time in milliseconds
-    #[prop_or(1.0_f32)]
-    kp: f32, // Amplification
+    #[prop_or(1.0_f64)]
+    kp: f64, // Amplification
 }
 
 #[function_component(PlotlyPT1)]
 pub fn plotly_pt1(PlotlyPT1Props { t1, ts, kp }: &PlotlyPT1Props) -> Html {
     fn validate_sample_time(sample_time: String) -> bool {
-        let st: f32 = sample_time.parse::<f32>().unwrap_or(-1.0);
+        let st: f64 = sample_time.parse::<f64>().unwrap_or(-1.0);
         st > 0.0
     }
 
     fn validate_t1(t1: String) -> bool {
-        let st: f32 = t1.parse::<f32>().unwrap_or(-1.0);
+        let st: f64 = t1.parse::<f64>().unwrap_or(-1.0);
         st > 0.0
     }
 
     fn validate_kp(kp: String) -> bool {
-        let st: f32 = kp.parse::<f32>().unwrap_or(-1.0);
+        let st: f64 = kp.parse::<f64>().unwrap_or(-1.0);
         st > 0.0
     }
 
@@ -61,7 +61,7 @@ pub fn plotly_pt1(PlotlyPT1Props { t1, ts, kp }: &PlotlyPT1Props) -> Html {
     let u: Array<f64, Ix1> = t.iter().map(|v| if *v > 0. { 1. } else { 0. }).collect();
 
     // PT1 response
-    let mut pt1 = PT1::<f64>::new(*ts as f32 * 1000.0, *t1 as f32 * 1000.0, *kp);
+    let mut pt1 = PT1::<f64>::new(*ts as f64 * 1000.0, *t1 as f64 * 1000.0, *kp);
     let y: Array<f64, Ix1> = u.iter().map(|v| pt1.transfer(*v)).collect();
 
     let mut plot = Plot::new();

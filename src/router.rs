@@ -2,7 +2,7 @@ use yew::prelude::*;
 use yew_router::prelude::*;
 
 use crate::pages::error::Error;
-use crate::pages::landing::Landing;
+use crate::pages::time_domain::TimeDomain;
 
 #[derive(Clone, Routable, PartialEq)]
 pub enum Route {
@@ -14,7 +14,7 @@ pub enum Route {
 
 pub fn switch(routes: Route) -> Html {
     match routes {
-        Route::Landing => html! { <Landing /> },
+        Route::Landing => html! { <TimeDomain /> },
         Route::Error => html! { <Error /> },
     }
 }
