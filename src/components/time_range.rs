@@ -1,20 +1,19 @@
-use yew::prelude::*;
-use yew_accordion::{Accordion, AccordionButton, AccordionItem};
+use accordion_rs::Size;
+use accordion_rs::yew::{Accordion, Item, List};
 use input_rs::yew::Input;
+use yew::prelude::*;
 
 use control_box::signal::TimeRange;
 
 #[derive(Properties, PartialEq)]
 pub struct TimeRangeDialogProps {
-    #[prop_or_default]
-    range: TimeRange,
     /// The state handle for managing the value of the input.
     pub handle: UseStateHandle<TimeRange>,
 }
 
 #[function_component(TimeRangeDialog)]
 pub fn time_range_dialog(props: &TimeRangeDialogProps) -> Html {
-    let updated = props.range.clone();
+    let updated = props.handle.clone();
 
     fn validate_sample_interval(sample_interval: String) -> bool {
         let st: f64 = sample_interval.parse::<f64>().unwrap_or(-1.0);
@@ -52,7 +51,7 @@ pub fn time_range_dialog(props: &TimeRangeDialogProps) -> Html {
 
     html! {
        <div>
-       <form>
+       <form  class="flex flex-row">
             <Input
                 r#type="number"
                 min="1"
@@ -65,7 +64,7 @@ pub fn time_range_dialog(props: &TimeRangeDialogProps) -> Html {
                 label="Sample interval [ms]"
                 required={true}
                 error_message="Must be a positive number"
-                class="form-field"
+                class="form-field w-64"
                 label_class="block text-sm text-gray-300 mb-2"
                 input_class="w-full p-2 border border-gray-600 rounded text-gray-100"
                 error_class="text-red-800"
@@ -80,7 +79,7 @@ pub fn time_range_dialog(props: &TimeRangeDialogProps) -> Html {
                 label="Start Time [ms]"
                 required={true}
                 error_message="Must be smaller than End Time"
-                class="form-field"
+                class="form-field w-64"
                 label_class="block text-sm text-gray-300 mb-2"
                 input_class="w-full p-2 border border-gray-600 rounded text-gray-100"
                 error_class="error-text"
@@ -95,7 +94,7 @@ pub fn time_range_dialog(props: &TimeRangeDialogProps) -> Html {
                 label="End Time [ms]"
                 required={true}
                 error_message="Must greater than Start Time"
-                class="form-field"
+                class="form-field w-64"
                 label_class="block text-sm text-gray-300 mb-2"
                 input_class="w-full p-2 border border-gray-600 rounded text-gray-100"
                 error_class="error-text"
@@ -108,45 +107,36 @@ pub fn time_range_dialog(props: &TimeRangeDialogProps) -> Html {
     }
 }
 
-
-
 #[derive(Properties, PartialEq)]
 pub struct AccordeonTimeRangeProps {
-    #[prop_or_default]
-    range: TimeRange,
     /// The state handle for managing the value of the input.
     pub handle: UseStateHandle<TimeRange>,
 }
 
 #[function_component(AccordeonTimeRange)]
 pub fn accordeon_time_signal(props: &AccordeonTimeRangeProps) -> Html {
-
+    let expand = use_state(|| false);
     let time_range = (*props.handle).clone();
 
     html! {
         <Accordion
-            expanded_element={html! {<AccordionButton class={"bg-blue-500 text-white p-2 rounded"}>
-                { " Time Range" }
-            </AccordionButton>}}
-            collapsed_element={html! {<AccordionButton class={"bg-green-500 text-white p-2 rounded"}>
+            expand={expand}
+            expanded={html! { " Time Range" }}
+            collapsed={html! {<>
                  { "Time Range - Start:" } {time_range.start.to_string()}
                  { " End " } {time_range.end.to_string()}
                  { " Interval "} {time_range.sampling_interval.to_string()}
-            </AccordionButton>}}
-
-            aria_controls="example-accordion"
-            container_class="my-custom-class bg-gray-800 p-4 rounded border border-gray-400"
-            expanded_element_class="my-expanded-class bg-gradient-to-r from-blue-700 to-blue-500 text-white p-2 rounded"
-            collapsed_element_class="my-collapsed-class bg-gradient-to-r from-green-700 to-green-500 text-white p-2 rounded"
-            content_container_class="my-content-class bg-gray-500 p-4 rounded border-t border-gray-700"
+            </>}}
+            size={Size::Custom("auto")}
+            class="my-custom-class bg-gray-800 p-4 rounded border border-gray-400"
+            expanded_class="my-expanded-class bg-gradient-to-r from-blue-700 to-blue-500 text-white p-2 rounded"
+            collapsed_class="my-collapsed-class bg-gradient-to-r from-green-700 to-green-500 text-white p-2 rounded"
         >
-            <ul>
-                <AccordionItem
-                    item_class="my-list-item-class border-b p-2 hover:bg-gray-700 transition duration-300 ease-in-out"
-                >
-                    < TimeRangeDialog range={props.range} handle={props.handle.clone()} />
-                </AccordionItem>
-            </ul>
+            <List>
+                <Item>
+                    < TimeRangeDialog handle={props.handle.clone()} />
+                </Item>
+            </List>
         </Accordion>
 
     }
