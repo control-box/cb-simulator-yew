@@ -114,7 +114,7 @@ pub struct AccordeonTimeRangeProps {
 }
 
 #[function_component(AccordeonTimeRange)]
-pub fn accordeon_time_signal(props: &AccordeonTimeRangeProps) -> Html {
+pub fn accordeon_time_range(props: &AccordeonTimeRangeProps) -> Html {
     let expand = use_state(|| false);
     let time_range = (*props.handle).clone();
 
@@ -134,7 +134,7 @@ pub fn accordeon_time_signal(props: &AccordeonTimeRangeProps) -> Html {
         >
             <List>
                 <Item>
-                    < TimeRangeDialog handle={props.handle.clone()} />
+                    <TimeRangeDialog handle={props.handle.clone()} />
                 </Item>
             </List>
         </Accordion>
