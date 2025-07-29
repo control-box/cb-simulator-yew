@@ -12,9 +12,8 @@ pub fn time_domain() -> Html {
     let time_range_handle = use_state(|| TimeRange::default());
     let time_range = (*time_range_handle).clone();
 
-    let signals_handle = use_state(|| vec![NamedTimeSignal::<f64>::default()]);
+    let signals_handle = use_state(|| Vec::<NamedTimeSignal<f64>>::new());
     let signals = (*signals_handle).clone();
-
 
     html! {
         <>

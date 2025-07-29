@@ -1,14 +1,14 @@
 use input_rs::yew::Input;
 use ndarray::{Array, Ix1};
 use plotly::{
-    Layout, Scatter,
     color::NamedColor,
     layout::{Axis, Shape, ShapeLine, ShapeType},
+    Layout, Scatter,
 };
 use yew::prelude::*;
-use yew_plotly::Plotly;
-use yew_plotly::plotly::Plot;
 use yew_plotly::plotly::common::{DashType, Mode};
+use yew_plotly::plotly::Plot;
+use yew_plotly::Plotly;
 
 use yew_accordion::{Accordion, AccordionButton, AccordionItem};
 

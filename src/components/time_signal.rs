@@ -1,15 +1,15 @@
-use accordion_rs::Size;
 use accordion_rs::yew::{Accordion, Item, List};
+use accordion_rs::Size;
 use input_rs::yew::Input;
+use log::info;
+use std::vec::Vec;
 use yew::prelude::*;
 
-use std::vec::Vec;
-
 use control_box::signal::*;
+
 use crate::components::step_fn::StepFunctionDialog;
 
-use log::info;
-
+use crate::components::time_signal_select::*;
 
 #[derive(Properties, PartialEq)]
 pub struct AccordeonTimeSignalsProps {
@@ -17,7 +17,7 @@ pub struct AccordeonTimeSignalsProps {
 }
 
 #[function_component(AccordeonTimeSignals)]
-pub fn accordeon_time_signals(props:  &AccordeonTimeSignalsProps) -> Html {
+pub fn accordeon_time_signals(props: &AccordeonTimeSignalsProps) -> Html {
     let expand = use_state(|| true);
 
     let signals_handle = props.signals.clone();
@@ -43,16 +43,20 @@ pub fn accordeon_time_signals(props:  &AccordeonTimeSignalsProps) -> Html {
     };
 
     let on_update = {
-
         let signals_handle = signals_handle.clone();
-        Callback::from(move |(signal_index, signal): (usize, NamedTimeSignal<f64>)| {
-            info!("on_update called for index {:?} new value: {:?}", signal_index, signal.name);
-            let mut signals = (*signals_handle).clone();
-            if signal_index < signals.len() {
-                 let _ = std::mem::replace(&mut signals[signal_index], signal);
-                signals_handle.set(signals);
-            }
-        })
+        Callback::from(
+            move |(signal_index, signal): (usize, NamedTimeSignal<f64>)| {
+                info!(
+                    "on_update called for index {:?} new value: {:?}",
+                    signal_index, signal.name
+                );
+                let mut signals = (*signals_handle).clone();
+                if signal_index < signals.len() {
+                    let _ = std::mem::replace(&mut signals[signal_index], signal);
+                    signals_handle.set(signals);
+                }
+            },
+        )
     };
 
     let signals = (*signals_handle)
@@ -83,7 +87,20 @@ pub fn accordeon_time_signals(props:  &AccordeonTimeSignalsProps) -> Html {
         })
         .collect::<Html>();
 
+    let add_default = use_state(|| NamedTimeSignal::<f64>::default());
 
+    let on_signal_type_change: Callback<BoxedTimeSignal<f64>> = {
+        let add_default = add_default.clone();
+
+        Callback::from(move |signal: BoxedTimeSignal<f64>| {
+            info!("on_signal_type_change called for signal: {:?}", signal);
+            let new_signal = NamedTimeSignal::<f64> {
+                name: "New Signal".to_string(),
+                signal,
+            };
+            add_default.set(new_signal.clone());
+        })
+    };
 
     html! {
         <Accordion
@@ -99,21 +116,21 @@ pub fn accordeon_time_signals(props:  &AccordeonTimeSignalsProps) -> Html {
         >
             <List>
                 { signals }
-                <Item>
-                  <button onclick={Callback::from(move |_| on_add.emit(NamedTimeSignal::<f64>::default()))}
+                <Item class="flex flex-row">
+                  <button onclick={Callback::from(move |_| on_add.emit((*add_default).clone()))}
                     class="btn-social bg-blue-600 hover:bg-blue-700 text-white w-12 h-12 rounded-lg text-xl leading-12"
                     aria-label="Add a signal"
                   >
                     <span class="fa-solid fa-plus"></span> { "Add"}
                   </button>
+                  <TimeSignalSelection onchange={on_signal_type_change} />
+
                 </Item>
             </List>
         </Accordion>
 
     }
 }
-
-
 
 #[derive(Properties, PartialEq)]
 pub struct NameTimeSignalDialogProps {
@@ -135,9 +152,32 @@ pub fn named_time_signal_dialog(props: &NameTimeSignalDialogProps) -> Html {
     let name_handle = use_state(|| updated.name.clone());
     let name_valid_handle = use_state(|| true);
 
-    updated.name =(*name_handle).parse::<String>().unwrap_or_default();
+    updated.name = (*name_handle).parse::<String>().unwrap_or_default();
     info!("Updated name: {}", updated.name);
-    props.on_update.emit(updated);
+    // props.on_update.emit(updated);
+
+    let signal_trait_object = props.named_time_signal.signal.clone();
+
+    // Runtime reflection (downcasting to concrete type)
+    // Variable assignment must be done outside the html! macro
+    let step_fn = if let Some(step) = signal_trait_object
+        .as_any()
+        .downcast_ref::<StepFunction<f64>>()
+    {
+        step.clone()
+    } else {
+        StepFunction::<f64>::default()
+    };
+    let handle_step = { use_state(|| step_fn.clone()) };
+    let impulse_fn = if let Some(impulse) = signal_trait_object
+        .as_any()
+        .downcast_ref::<ImpulsFunction<f64>>()
+    {
+        impulse.clone()
+    } else {
+        ImpulsFunction::<f64>::default()
+    };
+    let handle_impulse = { use_state(|| impulse_fn.clone()) };
 
     html! {
         <div class="flex flex-row">
@@ -158,88 +198,21 @@ pub fn named_time_signal_dialog(props: &NameTimeSignalDialogProps) -> Html {
                 input_class="w-full p-2 border border-gray-600 rounded text-gray-100"
                 error_class="text-red-800"
             />
-            <div>
-            <label for="signal_type_label"> { "Signal Type" } </label>
-            <select name="signal_type" id="signal_type_label" value="step">
-                <option value="random"> { "Random Noise" } </option>
-                <option value="step"> { "Step Function" } </option>
-                <option value="superposition"> {"Superposition"} </option>
-            </select>
-            </div>
         </form>
 
-         { format!("{}", props.named_time_signal.signal.clone()) }
+        {
+            if let Some(_) = signal_trait_object.as_any().downcast_ref::<StepFunction<f64>>() {
+                html! { <StepFunctionDialog handle={handle_step} /> }
+            } else {
+                if let Some(_) = signal_trait_object.as_any().downcast_ref::<ImpulsFunction<f64>>() {
+                    html! { format!("{}", props.named_time_signal.signal.clone()) }
+                   // html! { <ImpulseFunctionDialog handle={handle_impulse} /> }
+                } else {
+                    html! { format!("{}", props.named_time_signal.signal.clone()) }
+                }
+            }
+        }
 
-        </div>
-    }
-}
-
-        // <StepFunctionDialog step_fn={props.named_time_signal.signal.clone()} handle={use_state(|| props.named_time_signal.signal.clone())} />
-#[derive(Properties, PartialEq)]
-pub struct StepFunctionDialogProps {
-    #[prop_or_default]
-    pub step_fn: StepFunction<f64>,
-    /// The state handle for managing the value of the input.
-    pub handle: UseStateHandle<StepFunction<f64>>,
-}
-
-
-// https://stackoverflow.com/questions/42056422/using-any-with-traits-in-rust Any traits for reflexion
-
-#[derive(Properties, PartialEq)]
-pub struct TimeSignalDialogProps {
-    #[prop_or_default]
-    signal: NamedTimeSignal<f64>,
-    /// The state handle for managing the value of the input.
-    pub handle: UseStateHandle<NamedTimeSignal<f64>>,
-}
-
-#[function_component(TimeSignalDialog)]
-pub fn time_signal_dialog(props: &TimeSignalDialogProps) -> Html {
-    let updated: NamedTimeSignal<f64> = props.signal.clone();
-
-    let name_ref = use_node_ref();
-    let name_handle = use_state(|| updated.name.to_string());
-    let name_valid_handle = use_state(|| true);
-
-    fn always_valid(_s: String) -> bool {
-        true
-    }
-    // !todo - Extract signal type from named signal trait object
-    let step_fn_handle = use_state(StepFunction::<f64>::default);
-    let signal = (*step_fn_handle).clone();
-
-    props.handle.set(updated.clone());
-
-    html! {
-        <div>
-       <form  class="flex flex-row">
-            <Input
-                r#type="text"
-                name="name"
-                r#ref={name_ref}
-                handle={name_handle}
-                valid_handle={name_valid_handle}
-                validate_function={always_valid}
-
-                label="Signal Name"
-                required={true}
-                error_message="must be a word"
-                class="form-field w-64"
-                label_class="block text-sm text-gray-300 mb-2"
-                input_class="w-full p-2 border border-gray-600 rounded text-gray-100"
-                error_class="text-red-800"
-            />
-        <label for={"signal_type"}> {"Select a signal:"}</label>
-          <select id={"signal_type"} name={"signal_type"}>
-            <option value={"step"}>{"Step Function"}</option>
-
-            <option value={"white_noise"}>{"White Noise"}</option>
-            <option value={"superposition"}>{"Superposition of two Signals"}</option>
-            </select>
-        </form>
-
-       <StepFunctionDialog step_fn={signal} handle={step_fn_handle.clone()} />
 
         </div>
     }

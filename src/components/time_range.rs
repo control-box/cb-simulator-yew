@@ -1,5 +1,5 @@
-use accordion_rs::Size;
 use accordion_rs::yew::{Accordion, Item, List};
+use accordion_rs::Size;
 use input_rs::yew::Input;
 use yew::prelude::*;
 

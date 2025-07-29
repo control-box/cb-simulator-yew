@@ -1,17 +1,15 @@
-use accordion_rs::Size;
 use accordion_rs::yew::{Accordion, Item, List};
+use accordion_rs::Size;
 use ndarray::{Array, Ix1};
-use plotly::{Layout, Scatter, layout::Axis};
+use plotly::{layout::Axis, Layout, Scatter};
 use yew::prelude::*;
-use yew_plotly::Plotly;
-use yew_plotly::plotly::Plot;
 use yew_plotly::plotly::common::Mode;
+use yew_plotly::plotly::Plot;
+use yew_plotly::Plotly;
 
-use selectrs::yew::{Select, Option, Group};
+use web_sys::HtmlSelectElement;
 
-use log::info;
-
-use control_box::signal::{NamedTimeSignal, TimeRange, TimeSignal};
+use control_box::signal::{NamedTimeSignal, TimeRange};
 
 #[derive(Properties, PartialEq)]
 pub struct TimeSignalProps {
@@ -64,14 +62,36 @@ pub struct AccordeonPlotTimeSignalProps {
 pub fn accordeon_time_signal(props: &AccordeonPlotTimeSignalProps) -> Html {
     let expand = use_state(|| true);
 
-    let signal_names =  props.signals.iter().map(|signal| {
-        html! {
-            <option value={signal.name.clone()}>
-                { signal.name.clone() }
-            </option>
-        }
-    }).collect::<Html>();
+    // Collect signal names for the select dropdown
+    let signal_names = props
+        .signals
+        .iter()
+        .enumerate()
+        .map(|(index, signal)| {
+            html! {
+                        <option value={index.to_string()}
+                        selected={index == 0} // if the list get changed always the first element is selected
+            >
+                            { signal.name.clone() }
+                        </option>
+                    }
+        })
+        .collect::<Vec<Html>>();
 
+    let initial_selected = if !props.signals.is_empty() {
+        "0".to_string()
+    } else {
+        "".to_string()
+    };
+    let selected = use_state(|| initial_selected);
+
+    let selected_clone = selected.clone();
+    let on_change = Callback::from(move |event: Event| {
+        let target = event.target_dyn_into::<HtmlSelectElement>();
+        if let Some(select) = target {
+            selected_clone.set(select.value());
+        }
+    });
 
     html! {
         <Accordion
@@ -85,21 +105,28 @@ pub fn accordeon_time_signal(props: &AccordeonPlotTimeSignalProps) -> Html {
         >
             <List>
                 <Item>
-                    <select name={"signal"} onchange={
-                        Callback::from(|value| info!("selection change: {:?}", value))}
+                    <select name={"signal"} onchange={ on_change
+                        }
                     >
                         { signal_names }
 
                     </select>
                 </Item>
                 {
-                    if props.signals.len() == 0 {
+                    if props.signals.is_empty() {
                         html! { <Item>{"No signals available"}</Item> }
                     } else {
-                        html! {
-                            <Item>
-                                <PlotTimeSignal range={props.range.clone()} signal={props.signals[0].clone()} />
-                            </Item>
+                        let index = selected.parse::<usize>().unwrap_or(0);
+
+                        if let Some(signal) = props.signals.get(index) {
+                            html! {
+                                <Item>
+                                    <p>{ format!("You selected: {}", signal.name) }</p>
+                                    <PlotTimeSignal range={props.range.clone()} signal={signal.clone()} />
+                                </Item>
+                            }
+                        } else {
+                            html! { <Item>{"No signals available"}</Item> }
                         }
                     }
                 }
