@@ -22,10 +22,14 @@ pub fn accordeon_time_signals(props: &AccordeonTimeSignalsProps) -> Html {
 
     let signals_handle = props.signals.clone();
 
+    let new_signal_to_add = use_state(||
+        NamedTimeSignal::<f64>::default().set_name(format!("Signal-{}", props.signals.len() + 1 )));
+
     let on_add = {
         let signals_handle = signals_handle.clone();
         Callback::from(move |new: NamedTimeSignal<f64>| {
             let mut signals = (*signals_handle).clone();
+            let new = new.set_name(format!("Signal-{}", signals.len() + 1 ));
             signals.push(new);
             signals_handle.set(signals);
         })
@@ -87,18 +91,13 @@ pub fn accordeon_time_signals(props: &AccordeonTimeSignalsProps) -> Html {
         })
         .collect::<Html>();
 
-    let add_default = use_state(|| NamedTimeSignal::<f64>::default());
 
     let on_signal_type_change: Callback<BoxedTimeSignal<f64>> = {
-        let add_default = add_default.clone();
+        let new_signal_to_add = new_signal_to_add.clone();
 
         Callback::from(move |signal: BoxedTimeSignal<f64>| {
             info!("on_signal_type_change called for signal: {:?}", signal);
-            let new_signal = NamedTimeSignal::<f64> {
-                name: "New Signal".to_string(),
-                signal,
-            };
-            add_default.set(new_signal.clone());
+            new_signal_to_add.set(NamedTimeSignal::<f64>::default().set_signal(signal));
         })
     };
 
@@ -117,7 +116,7 @@ pub fn accordeon_time_signals(props: &AccordeonTimeSignalsProps) -> Html {
             <List>
                 { signals }
                 <Item class="flex flex-row">
-                  <button onclick={Callback::from(move |_| on_add.emit((*add_default).clone()))}
+                  <button onclick={Callback::from(move |_| on_add.emit((*new_signal_to_add).clone()))}
                     class="btn-social bg-blue-600 hover:bg-blue-700 text-white w-12 h-12 rounded-lg text-xl leading-12"
                     aria-label="Add a signal"
                   >
