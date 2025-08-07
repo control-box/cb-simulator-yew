@@ -17,7 +17,7 @@ pub enum TimeSignalTypes {
 }
 
 use control_box::signal::{
-    BoxedTimeSignal, ImpulsFunction, StepFunction, SuperPosition, TimeSignalSuperTrait,
+    BoxedTimeSignal, ImpulseFunction, StepFunction, SuperPosition, TimeSignalSuperTrait,
 };
 
 #[derive(Properties, PartialEq)]
@@ -32,7 +32,7 @@ pub fn time_signal_selection(props: &TimeSignalSelectProps) -> Html {
         .enumerate()
         .map(|(index, signal_type)| {
             html! {
-                <option value={index.to_string()}
+                <option  value={index.to_string()}
                     selected={index == 0} // if the list get changed always the first element is selected
                 >
                     { format!("{:?}", signal_type) }
@@ -57,7 +57,7 @@ pub fn time_signal_selection(props: &TimeSignalSelectProps) -> Html {
                             }
                             TimeSignalTypes::Impulse(_) => {
                                 info!("Selected Impulse Function");
-                                emitter.emit(Box::new(ImpulsFunction::<f64>::default()));
+                                emitter.emit(Box::new(ImpulseFunction::<f64>::default()));
                             }
                         }
                         break;
@@ -68,10 +68,13 @@ pub fn time_signal_selection(props: &TimeSignalSelectProps) -> Html {
     };
 
     html! {
+        <div class=" mx-auto">
+        <label for="signal_type_label" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> { "Select Signal Type" } </label>
         <select name={"signal"} onchange={ on_change}
-            class="block text-sm text-gray-300 mb-2 w-64"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
          id="signal_type_label">
             { time_signal_types }
         </select>
+        </div>
     }
 }

@@ -1,14 +1,12 @@
 use accordion_rs::yew::{Accordion, Item, List};
 use accordion_rs::Size;
-use input_rs::yew::Input;
 use log::info;
 use std::vec::Vec;
 use yew::prelude::*;
 
 use control_box::signal::*;
 
-use crate::components::step_fn::StepFunctionDialog;
-
+use crate::components::named_time_signal_dialog::NamedTimeSignalDialog;
 use crate::components::time_signal_select::*;
 
 #[derive(Properties, PartialEq)]
@@ -22,15 +20,21 @@ pub fn accordeon_time_signals(props: &AccordeonTimeSignalsProps) -> Html {
 
     let signals_handle = props.signals.clone();
 
+    // State to hold the new signal to add
     let new_signal_to_add = use_state(||
         NamedTimeSignal::<f64>::default().set_name(format!("Signal-{}", props.signals.len() + 1 )));
 
     let on_add = {
         let signals_handle = signals_handle.clone();
-        Callback::from(move |new: NamedTimeSignal<f64>| {
+        let new_signal_to_add = new_signal_to_add.clone();
+
+        Callback::from(move |_| {
             let mut signals = (*signals_handle).clone();
-            let new = new.set_name(format!("Signal-{}", signals.len() + 1 ));
+            let new_name = format!("Signal-{}", signals.len() + 1 );
+            let new = (*new_signal_to_add).clone().set_name(new_name);
+            info!("Add new signal: {}", new);
             signals.push(new);
+            info!("Last name: {}", signals.last().map_or("None".to_string(), |s| s.name.clone()));
             signals_handle.set(signals);
         })
     };
@@ -51,11 +55,12 @@ pub fn accordeon_time_signals(props: &AccordeonTimeSignalsProps) -> Html {
         Callback::from(
             move |(signal_index, signal): (usize, NamedTimeSignal<f64>)| {
                 info!(
-                    "on_update called for index {:?} new value: {:?}",
-                    signal_index, signal.name
+                    "On_update called for index {:?} new value: {}",
+                    signal_index, signal
                 );
                 let mut signals = (*signals_handle).clone();
                 if signal_index < signals.len() {
+                    info!("Replace!!!!");
                     let _ = std::mem::replace(&mut signals[signal_index], signal);
                     signals_handle.set(signals);
                 }
@@ -79,13 +84,15 @@ pub fn accordeon_time_signals(props: &AccordeonTimeSignalsProps) -> Html {
 
             html! {
                 <Item class="flex flex-row">
+                    <div class="flex flex-row items-center justify-between">
                     <button onclick={on_remove}
-                        class="btn-social bg-blue-600 hover:bg-blue-700 text-white w-12 h-12 rounded-lg text-xl leading-12"
+                        class="btn-social bg-blue-600 hover:bg-blue-700 text-white w-24 h-12 rounded-lg text-xl leading-12"
                         aria-label="Remove Signal"
                     >
                         <span class="fa-solid fa-minus"></span> { "Remove"}
                     </button>
-                    <NameTimeSignalDialog named_time_signal={signal.clone()} on_update={on_update} />
+                                      </div>
+                    <NamedTimeSignalDialog named_time_signal={signal.clone()} on_update={on_update} />
                 </Item>
             }
         })
@@ -116,103 +123,19 @@ pub fn accordeon_time_signals(props: &AccordeonTimeSignalsProps) -> Html {
             <List>
                 { signals }
                 <Item class="flex flex-row">
-                  <button onclick={Callback::from(move |_| on_add.emit((*new_signal_to_add).clone()))}
+                <div class="flex flex-row items-center justify-between">
+                  <button onclick={on_add}
                     class="btn-social bg-blue-600 hover:bg-blue-700 text-white w-12 h-12 rounded-lg text-xl leading-12"
                     aria-label="Add a signal"
                   >
                     <span class="fa-solid fa-plus"></span> { "Add"}
                   </button>
+                  </div>
                   <TimeSignalSelection onchange={on_signal_type_change} />
 
                 </Item>
             </List>
         </Accordion>
 
-    }
-}
-
-#[derive(Properties, PartialEq)]
-pub struct NameTimeSignalDialogProps {
-    #[prop_or_default]
-    pub named_time_signal: NamedTimeSignal<f64>,
-    /// The state handle for managing the value of the input.
-    pub on_update: Callback<NamedTimeSignal<f64>>,
-}
-
-#[function_component(NameTimeSignalDialog)]
-pub fn named_time_signal_dialog(props: &NameTimeSignalDialogProps) -> Html {
-    let mut updated = props.named_time_signal.clone();
-
-    fn always_valid(_s: String) -> bool {
-        true
-    }
-
-    let name_ref = use_node_ref();
-    let name_handle = use_state(|| updated.name.clone());
-    let name_valid_handle = use_state(|| true);
-
-    updated.name = (*name_handle).parse::<String>().unwrap_or_default();
-    info!("Updated name: {}", updated.name);
-    // props.on_update.emit(updated);
-
-    let signal_trait_object = props.named_time_signal.signal.clone();
-
-    // Runtime reflection (downcasting to concrete type)
-    // Variable assignment must be done outside the html! macro
-    let step_fn = if let Some(step) = signal_trait_object
-        .as_any()
-        .downcast_ref::<StepFunction<f64>>()
-    {
-        step.clone()
-    } else {
-        StepFunction::<f64>::default()
-    };
-    let handle_step = { use_state(|| step_fn.clone()) };
-    let impulse_fn = if let Some(impulse) = signal_trait_object
-        .as_any()
-        .downcast_ref::<ImpulsFunction<f64>>()
-    {
-        impulse.clone()
-    } else {
-        ImpulsFunction::<f64>::default()
-    };
-    let handle_impulse = { use_state(|| impulse_fn.clone()) };
-
-    html! {
-        <div class="flex flex-row">
-       <form  class="flex flex-row">
-            <Input
-                r#type="text"
-                name="name"
-                r#ref={name_ref}
-                handle={name_handle}
-                valid_handle={name_valid_handle}
-                validate_function={always_valid}
-
-                label="Signal Name"
-                required={true}
-                error_message="Must be a word"
-                class="form-field w-64"
-                label_class="block text-sm text-gray-300 mb-2"
-                input_class="w-full p-2 border border-gray-600 rounded text-gray-100"
-                error_class="text-red-800"
-            />
-        </form>
-
-        {
-            if let Some(_) = signal_trait_object.as_any().downcast_ref::<StepFunction<f64>>() {
-                html! { <StepFunctionDialog handle={handle_step} /> }
-            } else {
-                if let Some(_) = signal_trait_object.as_any().downcast_ref::<ImpulsFunction<f64>>() {
-                    html! { format!("{}", props.named_time_signal.signal.clone()) }
-                   // html! { <ImpulseFunctionDialog handle={handle_impulse} /> }
-                } else {
-                    html! { format!("{}", props.named_time_signal.signal.clone()) }
-                }
-            }
-        }
-
-
-        </div>
     }
 }

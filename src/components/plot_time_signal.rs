@@ -121,7 +121,6 @@ pub fn accordeon_time_signal(props: &AccordeonPlotTimeSignalProps) -> Html {
                         if let Some(signal) = props.signals.get(index) {
                             html! {
                                 <Item>
-                                    <p>{ format!("You selected: {}", signal.name) }</p>
                                     <PlotTimeSignal range={props.range.clone()} signal={signal.clone()} />
                                 </Item>
                             }
