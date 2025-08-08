@@ -68,7 +68,7 @@ pub fn named_time_signal_dialog(props: &NamedTimeSignalDialogProps) -> Html {
         props.on_update.emit(updated.clone());
     }
 
-    updated.name = (*name_handle).parse::<String>().unwrap_or_default();
+    // updated.name = (*name_handle).parse::<String>().unwrap_or_default();
     props.on_update.emit(updated);
 
     html! {
