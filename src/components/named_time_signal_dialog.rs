@@ -18,7 +18,8 @@ pub struct NamedTimeSignalDialogProps {
 #[function_component(NamedTimeSignalDialog)]
 pub fn named_time_signal_dialog(props: &NamedTimeSignalDialogProps) -> Html {
     let mut updated = props.named_time_signal.clone();
-    let name = props.named_time_signal.name.clone();
+    //let name = props.named_time_signal.name.clone();
+    let name = updated.name.clone();
 
 
     info!("Named Time Signal called: {}", updated);
@@ -68,7 +69,7 @@ pub fn named_time_signal_dialog(props: &NamedTimeSignalDialogProps) -> Html {
         props.on_update.emit(updated.clone());
     }
 
-    // updated.name = (*name_handle).parse::<String>().unwrap_or_default();
+    updated.name = (*name_handle).parse::<String>().unwrap_or_default();
     props.on_update.emit(updated);
 
     html! {
