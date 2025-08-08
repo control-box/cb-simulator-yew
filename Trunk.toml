@@ -1,0 +1,6 @@
+[build]
+public_url = "/control-box/"
+dist = "dist"
+filehash = false
+minify = "on_release"
+no_sri = true
