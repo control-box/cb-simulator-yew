@@ -1,12 +1,10 @@
-
-
 use log::info;
 use yew::prelude::*;
 
 use control_box::signal::*;
 
-use crate::components::step_fn::StepFunctionDialog;
 use crate::components::impulse_fn::ImpulseFunctionDialog;
+use crate::components::step_fn::StepFunctionDialog;
 
 #[derive(Properties, PartialEq)]
 pub struct NamedTimeSignalDialogProps {
@@ -20,7 +18,6 @@ pub fn named_time_signal_dialog(props: &NamedTimeSignalDialogProps) -> Html {
     let mut updated = props.named_time_signal.clone();
     //let name = props.named_time_signal.name.clone();
     let name = updated.name.clone();
-
 
     let signal_trait_object = props.named_time_signal.signal.clone();
 
@@ -36,7 +33,6 @@ pub fn named_time_signal_dialog(props: &NamedTimeSignalDialogProps) -> Html {
     };
     let handle_step = { use_state(|| step_fn.clone()) };
 
-
     let impulse_fn = if let Some(impulse) = signal_trait_object
         .as_any()
         .downcast_ref::<ImpulseFunction<f64>>()
@@ -47,12 +43,24 @@ pub fn named_time_signal_dialog(props: &NamedTimeSignalDialogProps) -> Html {
     };
     let handle_impulse = { use_state(|| impulse_fn.clone()) };
 
-    if let Some(step) = props.named_time_signal.signal.clone().as_any().downcast_ref::<StepFunction<f64>>() {
+    if let Some(step) = props
+        .named_time_signal
+        .signal
+        .clone()
+        .as_any()
+        .downcast_ref::<StepFunction<f64>>()
+    {
         // Update only if trait object is a StepFunction
         info!("Step function found: {}", step);
         updated.signal = Box::new((*handle_step).clone());
     }
-    if let Some(impulse) = props.named_time_signal.signal.clone().as_any().downcast_ref::<ImpulseFunction<f64>>() {
+    if let Some(impulse) = props
+        .named_time_signal
+        .signal
+        .clone()
+        .as_any()
+        .downcast_ref::<ImpulseFunction<f64>>()
+    {
         // Update only if trait object is an ImpulseFunction
         info!("Impulse function found: {}", impulse);
         updated.signal = Box::new((*handle_impulse).clone());

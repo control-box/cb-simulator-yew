@@ -37,7 +37,7 @@ pub fn impulse_function_dialog(props: &ImpulseFunctionDialogProps) -> Html {
         out_value: (*out_value_handle).parse::<f64>().unwrap_or_default(),
         in_value: (*in_value_handle).parse::<f64>().unwrap_or_default(),
         start_time: (*start_handle).parse::<f64>().unwrap_or_default(),
-        duration:(*duration_handle).parse::<f64>().unwrap_or_default(),
+        duration: (*duration_handle).parse::<f64>().unwrap_or_default(),
     };
 
     props.handle.set(updated.clone());

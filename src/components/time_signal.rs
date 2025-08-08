@@ -23,8 +23,9 @@ pub fn accordeon_time_signals(props: &AccordeonTimeSignalsProps) -> Html {
     let signals_handle = props.signals.clone();
 
     // State to hold the new signal to add
-    let new_handle = use_state_eq(||
-        NamedTimeSignal::<f64>::default().set_name(format!("Signal-{}", props.signals.len() + 1 )));
+    let new_handle = use_state_eq(|| {
+        NamedTimeSignal::<f64>::default().set_name(format!("Signal-{}", props.signals.len() + 1))
+    });
     fn always_valid(_s: String) -> bool {
         true
     }
@@ -43,14 +44,13 @@ pub fn accordeon_time_signals(props: &AccordeonTimeSignalsProps) -> Html {
             let new = (*new_handle).clone();
             info!("Add new signal: {}", new);
             signals.push(new.clone());
-            let new_name = format!("Signal-{}", signals.len() + 1 );
+            let new_name = format!("Signal-{}", signals.len() + 1);
             signals_handle.set(signals);
             name_handle.set(new_name.clone());
 
             let new = new.set_name(new_name);
             info!("Signal_name update after ADD: {}", new.name);
             new_handle.set(new);
-
         })
     };
 
@@ -69,10 +69,7 @@ pub fn accordeon_time_signals(props: &AccordeonTimeSignalsProps) -> Html {
         let signals_handle = signals_handle.clone();
         Callback::from(
             move |(signal_index, signal): (usize, NamedTimeSignal<f64>)| {
-                info!(
-                    "on_update: at {:?} value: {}",
-                    signal_index, signal
-                );
+                info!("on_update: at {:?} value: {}", signal_index, signal);
                 let mut signals = (*signals_handle).clone();
                 if signal_index < signals.len() {
                     let _ = std::mem::replace(&mut signals[signal_index], signal);
@@ -114,12 +111,10 @@ pub fn accordeon_time_signals(props: &AccordeonTimeSignalsProps) -> Html {
         })
         .collect::<Html>();
 
-
     let on_signal_type_change: Callback<BoxedTimeSignal<f64>> = {
         let new_handle = new_handle.clone();
 
         Callback::from(move |signal: BoxedTimeSignal<f64>| {
-
             let new_named_signal = (*new_handle).clone().set_signal(signal);
             info!("Signal_type_change: {}", new_named_signal);
             new_handle.set(new_named_signal);

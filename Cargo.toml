@@ -21,4 +21,4 @@ log = "0.4.27"
 web-sys = { version = "0.3.77", features = ["HtmlSelectElement", "HtmlCollection",] }
 strum = { version = "0.27.2", features = ["derive"] }
 strum_macros = "0.27.2"
-yew_icons = { version = "0.8.0", features = ["font_awesome_solid"] }
+

@@ -16,9 +16,7 @@ pub enum TimeSignalTypes {
     Impulse(YewImpulseFn),
 }
 
-use control_box::signal::{
-    BoxedTimeSignal, ImpulseFunction, StepFunction, SuperPosition, DynTimeSignal,
-};
+use control_box::signal::{BoxedTimeSignal, ImpulseFunction, StepFunction};
 
 #[derive(Properties, PartialEq)]
 pub struct TimeSignalSelectProps {
