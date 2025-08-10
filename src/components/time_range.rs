@@ -65,8 +65,8 @@ pub fn time_range_dialog(props: &TimeRangeDialogProps) -> Html {
                 required={true}
                 error_message="Must be a positive number"
                 class="form-field w-64"
-                label_class="block text-sm text-gray-300 mb-2"
-                input_class="w-full p-2 border border-gray-600 rounded text-gray-100"
+                label_class="block text-sm mb-2"
+                input_class="w-full p-2 border border-gray-400 dark:border-gray-600  rounded "
                 error_class="text-red-800"
             />
             <Input
@@ -80,8 +80,8 @@ pub fn time_range_dialog(props: &TimeRangeDialogProps) -> Html {
                 required={true}
                 error_message="Must be smaller than End Time"
                 class="form-field w-64"
-                label_class="block text-sm text-gray-300 mb-2"
-                input_class="w-full p-2 border border-gray-600 rounded text-gray-100"
+                label_class="block text-sm mb-2"
+                input_class="w-full p-2 border border-gray-400 dark:border-gray-600 rounded"
                 error_class="error-text"
             />
             <Input
@@ -95,8 +95,8 @@ pub fn time_range_dialog(props: &TimeRangeDialogProps) -> Html {
                 required={true}
                 error_message="Must greater than Start Time"
                 class="form-field w-64"
-                label_class="block text-sm text-gray-300 mb-2"
-                input_class="w-full p-2 border border-gray-600 rounded text-gray-100"
+                label_class="block text-sm mb-2"
+                input_class="w-full p-2 border border-gray-400 dark:border-gray-600 rounded"
                 error_class="error-text"
             />
         </form>
@@ -128,9 +128,9 @@ pub fn accordeon_time_range(props: &AccordeonTimeRangeProps) -> Html {
                  { " Interval "} {time_range.sampling_interval.to_string()}
             </>}}
             size={Size::Custom("auto")}
-            class="my-custom-class bg-gray-800 p-4 rounded border border-gray-400"
-            expanded_class="my-expanded-class bg-gradient-to-r from-blue-700 to-blue-500 text-white p-2 rounded"
-            collapsed_class="my-collapsed-class bg-gradient-to-r from-green-700 to-green-500 text-white p-2 rounded"
+            class="p-4 rounded border border-gray-400 dark:border-gray-600"
+            expanded_class=" bg-gradient-to-r from-blue-700 to-blue-500 text-white p-2 rounded"
+            collapsed_class=" bg-gradient-to-r from-green-700 to-green-500 text-white p-2 rounded"
         >
             <List>
                 <Item>

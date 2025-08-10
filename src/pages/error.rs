@@ -1,10 +1,8 @@
 use yew::prelude::*;
 
-#[function_component(Error)]
-pub fn error() -> Html {
-    html! {
-        <div>
-            <h1>{ "Error Page." }</h1>
-        </div>
-    }
+
+#[function_component(NotFound)]
+pub fn not_found() -> Html {
+    html! { <h2>{ "Page not found 404 - error" }</h2> }
 }
+

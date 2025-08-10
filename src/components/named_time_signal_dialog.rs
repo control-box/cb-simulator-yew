@@ -71,27 +71,26 @@ pub fn named_time_signal_dialog(props: &NamedTimeSignalDialogProps) -> Html {
 
     html! {
         <div class="p-4">
-        <div class="flex content-start flex-row rounded border p-2 border-gray-400">
-        <div class="flex flex-col w-64">
-            <label class="block text-sm text-gray-300 mb-2 form-field" for="signal_name"> { "Signal Name" } </label>
-            <div id="signal_name" class="text-gray-300 text-lg font-bold w-64">
-                { name}
+        <div class="flex content-start flex-row rounded border p-2 border-gray-400 dark:border-gray-600">
+            <div class="flex flex-col w-64">
+                <label class="block text-sm text-gray-300 dark:text-gray-700 mb-2 form-field" for="signal_name"> { "Signal Name" } </label>
+                <div id="signal_name" class=" text-lg font-bold w-64">
+                    { name}
+                </div>
             </div>
-         </div>
-        {
-            if let Some(_) = signal_trait_object.as_any().downcast_ref::<StepFunction<f64>>() {
-                html! { <StepFunctionDialog handle={handle_step} /> }
-            } else {
-                if let Some(_) = signal_trait_object.as_any().downcast_ref::<ImpulseFunction<f64>>() {
-                   // html! { format!("{}", props.named_time_signal.signal.clone()) }
-                   html! { <ImpulseFunctionDialog handle={handle_impulse} /> }
+            {
+                if let Some(_) = signal_trait_object.as_any().downcast_ref::<StepFunction<f64>>() {
+                    html! { <StepFunctionDialog handle={handle_step} /> }
                 } else {
-                    html! { format!("{}", props.named_time_signal.signal.clone()) }
+                    if let Some(_) = signal_trait_object.as_any().downcast_ref::<ImpulseFunction<f64>>() {
+                    // html! { format!("{}", props.named_time_signal.signal.clone()) }
+                    html! { <ImpulseFunctionDialog handle={handle_impulse} /> }
+                    } else {
+                        html! { format!("{}", props.named_time_signal.signal.clone()) }
+                    }
                 }
             }
-        }
-
-        </div>
+            </div>
         </div>
     }
 }

@@ -102,9 +102,9 @@ pub fn plotly_pt1(PlotlyPT1Props { t1, ts, kp }: &PlotlyPT1Props) -> Html {
         collapsed_element={html! {<AccordionButton class={"bg-green-500 text-white p-2 rounded"}>{ "PT1 Response" }</AccordionButton>}}
 
         aria_controls="example-accordion"
-        container_class="my-custom-class bg-gray-800 p-4 rounded border border-gray-400"
-        expanded_element_class="my-expanded-class bg-gradient-to-r from-blue-700 to-blue-500 text-white p-2 rounded"
-        collapsed_element_class="my-collapsed-class bg-gradient-to-r from-green-700 to-green-500 text-white p-2 rounded"
+        container_class="bg-gray-800 p-4 rounded border border-gray-400"
+        expanded_element_class=" bg-gradient-to-r from-blue-700 to-blue-500 text-white p-2 rounded"
+        collapsed_element_class=" bg-gradient-to-r from-green-700 to-green-500 text-white p-2 rounded"
         content_container_class="my-content-class bg-gray-500 p-4 rounded border-t border-gray-700"
     >
         <ul>

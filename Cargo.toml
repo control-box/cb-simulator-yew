@@ -2,6 +2,7 @@
 name = "simulator"
 version = "0.1.0"
 edition = "2021"
+build = "build.rs"
 
 [dependencies]
 ndarray = "0.15.6"
@@ -18,7 +19,8 @@ wasm-bindgen = "0.2.100"
 input-rs = { version = "0.2.5", features = ["yew"] }
 accordion-rs = { version = "0.2.6", features = ["yew"] }
 log = "0.4.27"
-web-sys = { version = "0.3.77", features = ["HtmlSelectElement", "HtmlCollection",] }
+web-sys = { version = "0.3.77", features = ["HtmlSelectElement", "HtmlCollection","Document", "Element", "DomTokenList"] }
 strum = { version = "0.27.2", features = ["derive"] }
 strum_macros = "0.27.2"
+gloo = { version = "0.11", features = ["storage", "utils"] }
 

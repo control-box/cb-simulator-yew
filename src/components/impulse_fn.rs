@@ -45,7 +45,11 @@ pub fn impulse_function_dialog(props: &ImpulseFunctionDialogProps) -> Html {
     html! {
         <div>
        <form  class="flex flex-row">
-            <label class="block text-sm text-gray-300 mb-2 form-field w-64" for="step_function_label"> { "Impulse Function" } </label>
+            <div class="flex flex-col w-64">
+                <label class="block text-sm mb-2 form-field w-64 text-gray-300 dark:text-gray-700
+                " for="impulse_function_label"> { "Signal Type" } </label>
+                <div id="impulse_function_label" class=" text-lg font-bold w-64"> { "Impulse Function"} </div>
+            </div>
             <Input
                 r#type="number"
                 name="out_value"
@@ -58,8 +62,8 @@ pub fn impulse_function_dialog(props: &ImpulseFunctionDialogProps) -> Html {
                 required={true}
                 error_message="Must be a number"
                 class="form-field w-64"
-                label_class="block text-sm text-gray-300 mb-2"
-                input_class="w-full p-2 border border-gray-600 rounded text-gray-100"
+                label_class="block text-sm mb-2 text-gray-300 dark:text-gray-700"
+                input_class="w-full p-2 border border-gray-400 dark:border-gray-600 rounded "
                 error_class="text-red-800"
             />
             <Input
@@ -74,8 +78,8 @@ pub fn impulse_function_dialog(props: &ImpulseFunctionDialogProps) -> Html {
                 required={true}
                 error_message="Must be a number"
                 class="form-field w-64"
-                label_class="block text-sm text-gray-300 mb-2"
-                input_class="w-full p-2 border border-gray-600 rounded text-gray-100"
+                label_class="block text-sm mb-2 text-gray-300 dark:text-gray-700"
+                input_class="w-full p-2 border border-gray-400 dark:border-gray-600 rounded "
                 error_class="error-text"
             />
             <Input
@@ -90,8 +94,8 @@ pub fn impulse_function_dialog(props: &ImpulseFunctionDialogProps) -> Html {
                 required={true}
                 error_message="Must be a number"
                 class="form-field w-64"
-                label_class="block text-sm text-gray-300 mb-2"
-                input_class="w-full p-2 border border-gray-600 rounded text-gray-100"
+                label_class="block text-sm mb-2 text-gray-300 dark:text-gray-700"
+                input_class="w-full p-2 border border-gray-400 dark:border-gray-600 rounded "
                 error_class="error-text"
             />
             <Input
@@ -106,8 +110,8 @@ pub fn impulse_function_dialog(props: &ImpulseFunctionDialogProps) -> Html {
                 required={true}
                 error_message="Must be a positive number"
                 class="form-field w-64"
-                label_class="block text-sm text-gray-300 mb-2"
-                input_class="w-full p-2 border border-gray-600 rounded text-gray-100"
+                label_class="block text-sm mb-2 text-gray-300 dark:text-gray-700"
+                input_class="w-full p-2 border border-gray-400 dark:border-gray-600 rounded"
                 error_class="error-text"
             />
         </form>

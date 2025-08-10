@@ -1,3 +1,6 @@
+pub mod theme_toggle;
+
+
 pub mod impulse_fn;
 pub mod named_time_signal_dialog;
 pub mod plot_time_signal;

@@ -55,13 +55,12 @@ pub struct AccordeonPlotTimeSignalProps {
     #[prop_or_default]
     pub signals: Vec<NamedTimeSignal<f64>>,
 }
-// expanded_class="my-expanded-class bg-gradient-to-r from-blue-700 to-blue-500 text-white p-2 rounded"
+// expanded_class=" bg-gradient-to-r from-blue-700 to-blue-500 text-white p-2 rounded"
 // collapsed_class="my-collapsed-class bg-gradient-to-r from-green-700 to-green-500 text-white p-2 rounded"
 // class="w-full my-content-class bg-gray-500 p-4 rounded border-t border-gray-700"
 #[function_component(AccordeonPlotTimeSignal)]
 pub fn accordeon_time_signal(props: &AccordeonPlotTimeSignalProps) -> Html {
-    let expand = use_state(|| true);
-
+    let expand = use_state(|| false);
     // Collect signal names for the select dropdown
     let signal_names = props
         .signals
@@ -96,21 +95,23 @@ pub fn accordeon_time_signal(props: &AccordeonPlotTimeSignalProps) -> Html {
     html! {
         <Accordion
             expand={expand}
-            expanded={html! { "Select Time Signal" } }
-            collapsed={html! { "Plot Time Signal: " } }
-            expanded_class="my-expanded-class bg-gradient-to-r from-blue-700 to-blue-500 text-white p-2 rounded"
-            collapsed_class="my-collapsed-class bg-gradient-to-r from-green-700 to-green-500 text-white p-2 rounded"
-            class="w-full my-content-class bg-gray-500 p-4 rounded border-t border-gray-700"
+            expanded={html! { "Plot Time Signal" } }
+            collapsed={html! { "Plot Time Signal " } }
+            expanded_class=" bg-gradient-to-r from-blue-700 to-blue-500 text-white p-2 rounded"
+            collapsed_class="bg-gradient-to-r from-green-700 to-green-500 text-white p-2 rounded"
+            class="w-full p-4 rounded border border-gray-400 dark:border-gray-600"
             size={Size::Custom("auto")}
         >
             <List>
                 <Item>
-                    <select name={"signal"} onchange={ on_change
-                        }
-                    >
-                        { signal_names }
-
-                    </select>
+                    <div class=" mx-auto">
+                        <label for="signal_type_label" class="block mb-2 text-sm font-medium text-gray-300 dark:text-gray-700"> { "Select Signal by Name" } </label>
+                        <select name={"signal"} onchange={ on_change}
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        id="signal_type_label">
+                            { signal_names }
+                        </select>
+                    </div>
                 </Item>
                 {
                     if props.signals.is_empty() {

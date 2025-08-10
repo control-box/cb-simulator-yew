@@ -40,7 +40,11 @@ pub fn step_function_dialog(props: &StepFunctionDialogProps) -> Html {
     html! {
         <div>
        <form  class="flex flex-row">
-            <label class="block text-sm text-gray-300 mb-2 form-field w-64" for="step_function_label"> { "Step Function" } </label>
+            <div class="flex flex-col w-64">
+                <label class="block text-sm mb-2 form-field w-64 text-gray-300 dark:text-gray-700
+                " for="step_function_label"> { "Signal Type" } </label>
+                <div id="step_function_label" class=" text-lg font-bold w-64"> { "Step Function"} </div>
+            </div>
             <Input
                 r#type="number"
                 name="pre_value"
@@ -53,8 +57,8 @@ pub fn step_function_dialog(props: &StepFunctionDialogProps) -> Html {
                 required={true}
                 error_message="Must be a number"
                 class="form-field w-64"
-                label_class="block text-sm text-gray-300 mb-2"
-                input_class="w-full p-2 border border-gray-600 rounded text-gray-100"
+                label_class="block text-sm mb-2"
+                input_class="w-full p-2 border border-gray-400 dark:border-gray-600 rounded"
                 error_class="text-red-800"
             />
             <Input
@@ -69,8 +73,8 @@ pub fn step_function_dialog(props: &StepFunctionDialogProps) -> Html {
                 required={true}
                 error_message="Must be a number"
                 class="form-field w-64"
-                label_class="block text-sm text-gray-300 mb-2"
-                input_class="w-full p-2 border border-gray-600 rounded text-gray-100"
+                label_class="block text-sm mb-2"
+                input_class="w-full p-2 border border-gray-400 dark:border-gray-600 rounded"
                 error_class="error-text"
             />
             <Input
@@ -85,8 +89,8 @@ pub fn step_function_dialog(props: &StepFunctionDialogProps) -> Html {
                 required={true}
                 error_message="Must greater than post_value Time"
                 class="form-field w-64"
-                label_class="block text-sm text-gray-300 mb-2"
-                input_class="w-full p-2 border border-gray-600 rounded text-gray-100"
+                label_class="block text-sm mb-2"
+                input_class="w-full p-2 border border-gray-400 dark:border-gray-600 rounded"
                 error_class="error-text"
             />
         </form>
