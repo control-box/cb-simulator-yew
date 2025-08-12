@@ -1,10 +1,7 @@
 use yew::prelude::*;
 
+use crate::components::time_signal::registry::list_factories;
 use control_box::signal::*;
-
-use crate::components::time_signal::impulse_fn::ImpulseFunctionDialog;
-use crate::components::time_signal::step_fn::StepFunctionDialog;
-
 #[derive(Properties, PartialEq)]
 pub struct NamedTimeSignalDialogProps {
     pub time_signal: NamedTimeSignal<f64>,
@@ -15,7 +12,6 @@ pub struct NamedTimeSignalDialogProps {
 #[function_component(NamedTimeSignalDialog)]
 pub fn time_signal_dialog(props: &NamedTimeSignalDialogProps) -> Html {
     let updated = props.time_signal.clone();
-    //let name = props.time_signal.name.clone();
     let name = updated.name.clone();
 
     let on_update = {
@@ -38,12 +34,16 @@ pub fn time_signal_dialog(props: &NamedTimeSignalDialogProps) -> Html {
                 </div>
             </div>
             {
-
-                match signal.clone().short_type_name() {
-                    "Step" => html! { <StepFunctionDialog time_signal={signal.clone()} on_update={ on_update }/> },
-                    "Impulse" => html! { <ImpulseFunctionDialog time_signal={signal.clone()} on_update={ on_update } /> },
-                    _ => html! { format!("{}", signal.clone()) }
-                }
+                // statically it would be:
+                // match signal.clone().short_type_name() {
+                //     "Step" => html! { <StepFunctionDialog time_signal={signal.clone()} on_update={ on_update }/> },
+                //     "Impulse" => html! { <ImpulseFunctionDialog time_signal={signal.clone()} on_update={ on_update } /> },
+                //     _ => html! { format!("{}", signal.clone()) }
+                // }
+                list_factories()
+                    .into_iter()
+                    .map(|factory|factory().dialog(signal.clone(), on_update.clone()))
+                    .collect::<Html>()
             }
             </div>
         </div>

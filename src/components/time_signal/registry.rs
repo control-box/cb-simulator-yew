@@ -1,10 +1,15 @@
 use control_box::signal::DynTimeSignal;
-use yew::Html;
+use yew::{Callback, Html};
 
 use once_cell::sync::Lazy;
 use std::sync::RwLock;
 
 pub trait YewTimeSignal: Send + Sync {
+    fn dialog(
+        &self,
+        signal: Box<dyn DynTimeSignal<f64>>,
+        on_update: Callback<Box<dyn DynTimeSignal<f64>>>,
+    ) -> Html;
     fn name(&self) -> &str;
     fn render(&self) -> Html;
     fn signal(&self) -> Box<dyn DynTimeSignal<f64> + 'static + Sync + Send>;

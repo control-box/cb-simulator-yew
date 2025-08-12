@@ -3,13 +3,25 @@ use yew::prelude::*;
 
 use crate::components::time_signal::registry::{register_time_signal, YewTimeSignal};
 use crate::components::time_signal::BoxedTimeSignalDialogProps;
-use control_box::signal::{step_fn::StepFunction, TimeSignal};
+use control_box::signal::{step_fn::StepFunction, DynTimeSignal, TimeSignal};
 
 pub struct YewStep {
     signal: StepFunction<f64>,
 }
 
 impl YewTimeSignal for YewStep {
+    fn dialog(
+        &self,
+        signal: Box<dyn DynTimeSignal<f64>>,
+        on_update: Callback<Box<dyn DynTimeSignal<f64>>>,
+    ) -> Html {
+        if self.signal().short_type_name() == signal.short_type_name() {
+            html! { <StepFunctionDialog time_signal={signal} on_update={ on_update }/> }
+        } else {
+            html! {}
+        }
+    }
+
     fn name(&self) -> &'static str {
         self.signal.short_type_name()
     }

@@ -4,13 +4,25 @@ use yew::prelude::*;
 use crate::components::time_signal::registry::{register_time_signal, YewTimeSignal};
 use crate::components::time_signal::BoxedTimeSignalDialogProps;
 use control_box::signal::impulse_fn::ImpulseFunction;
-use control_box::signal::TimeSignal;
+use control_box::signal::{DynTimeSignal, TimeSignal};
 
 pub struct YewImpulse {
     signal: ImpulseFunction<f64>,
 }
 
 impl YewTimeSignal for YewImpulse {
+    fn dialog(
+        &self,
+        signal: Box<dyn DynTimeSignal<f64>>,
+        on_update: Callback<Box<dyn DynTimeSignal<f64>>>,
+    ) -> Html {
+        if self.signal().short_type_name() == signal.short_type_name() {
+            html! { <ImpulseFunctionDialog time_signal={signal} on_update={ on_update }/> }
+        } else {
+            html! {}
+        }
+    }
+
     fn name(&self) -> &'static str {
         self.signal.short_type_name()
     }
