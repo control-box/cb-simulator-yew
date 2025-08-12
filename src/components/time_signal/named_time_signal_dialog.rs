@@ -1,4 +1,3 @@
-
 use yew::prelude::*;
 
 use control_box::signal::*;
@@ -23,7 +22,7 @@ pub fn time_signal_dialog(props: &NamedTimeSignalDialogProps) -> Html {
         let emitter = props.on_update.clone();
         let updated = updated.clone();
         Callback::from(move |signal| {
-            let  updated = updated.clone().set_signal(signal);
+            let updated = updated.clone().set_signal(signal);
             emitter.emit(updated);
         })
     };

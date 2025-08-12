@@ -1,11 +1,10 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
 
+use crate::pages::about::About;
+use crate::pages::error::NotFound;
 use crate::pages::time_domain::TimeDomain;
 use crate::pages::z_domain::ZDomain;
-use crate::pages::about::About;
-use crate::pages::error::{NotFound};
-
 
 #[derive(Clone, Routable, PartialEq)]
 pub enum Route {
@@ -18,7 +17,6 @@ pub enum Route {
     #[at("/404")]
     #[not_found]
     NotFound,
-
 }
 
 pub fn switch(routes: Route) -> Html {

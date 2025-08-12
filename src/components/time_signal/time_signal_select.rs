@@ -1,11 +1,10 @@
-
+use crate::components::time_signal::registry::list_factories;
 use web_sys::HtmlSelectElement;
 use yew::prelude::*;
-use crate::components::time_signal::registry::{list_factories};
 
 use log::info;
 
-use control_box::signal::{BoxedTimeSignal};
+use control_box::signal::BoxedTimeSignal;
 
 #[derive(Properties, PartialEq)]
 pub struct TimeSignalSelectProps {
@@ -28,7 +27,6 @@ pub fn time_signal_selection(props: &TimeSignalSelectProps) -> Html {
             }
         })
         .collect::<Html>();
-
 
     let on_change = {
         let emitter = props.onchange.clone();

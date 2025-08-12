@@ -1,15 +1,12 @@
-use yew::prelude::*;
 use gloo::storage::{LocalStorage, Storage};
 use gloo::utils::document;
 use log::info;
-
+use yew::prelude::*;
 
 #[function_component(ThemeToggle)]
 pub fn theme_toggle() -> Html {
-
-    let dark_mode = use_state(|| {
-        LocalStorage::get("theme").unwrap_or_else(|_| "light".to_string()) == "dark"
-    });
+    let dark_mode =
+        use_state(|| LocalStorage::get("theme").unwrap_or_else(|_| "light".to_string()) == "dark");
 
     {
         let dark_mode = dark_mode.clone();

@@ -1,10 +1,9 @@
 use input_rs::yew::Input;
 use yew::prelude::*;
 
-use control_box::signal::{step_fn::StepFunction, TimeSignal};
-use crate::components::time_signal::BoxedTimeSignalDialogProps;
 use crate::components::time_signal::registry::{register_time_signal, YewTimeSignal};
-
+use crate::components::time_signal::BoxedTimeSignalDialogProps;
+use control_box::signal::{step_fn::StepFunction, TimeSignal};
 
 pub struct YewStep {
     signal: StepFunction<f64>,
@@ -23,20 +22,23 @@ impl YewTimeSignal for YewStep {
         Box::new(self.signal.clone())
     }
 }
-fn yew_step_factory() ->  Box<dyn YewTimeSignal + Sync> {
-    Box::new(YewStep { signal: StepFunction::<f64>::default() })
+fn yew_step_factory() -> Box<dyn YewTimeSignal + Sync> {
+    Box::new(YewStep {
+        signal: StepFunction::<f64>::default(),
+    })
 }
 
 pub fn register() {
     register_time_signal(yew_step_factory);
 }
 
-
 #[function_component(StepFunctionDialog)]
 pub fn step_function_dialog(props: &BoxedTimeSignalDialogProps) -> Html {
     // Runtime reflection (downcasting to concrete type)
     // Variable assignment must be done outside the html! macro
-    let updated = if let Some(step) = props.time_signal.clone()
+    let updated = if let Some(step) = props
+        .time_signal
+        .clone()
         .as_any()
         .downcast_ref::<StepFunction<f64>>()
     {
@@ -67,7 +69,7 @@ pub fn step_function_dialog(props: &BoxedTimeSignalDialogProps) -> Html {
         step_time: (*step_time_handle).parse::<f64>().unwrap_or_default(),
     };
 
-     props.on_update.emit(Box::new(updated));
+    props.on_update.emit(Box::new(updated));
 
     html! {
         <div>

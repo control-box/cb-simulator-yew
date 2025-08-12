@@ -1,6 +1,6 @@
 use accordion_rs::yew::{Accordion, Item, List};
 use accordion_rs::Size;
-use log::{info};
+use log::info;
 use std::vec::Vec;
 use yew::prelude::*;
 

@@ -1,11 +1,10 @@
 use input_rs::yew::Input;
 use yew::prelude::*;
 
-use control_box::signal::TimeSignal;
-use control_box::signal::impulse_fn::ImpulseFunction;
-use crate::components::time_signal::BoxedTimeSignalDialogProps;
 use crate::components::time_signal::registry::{register_time_signal, YewTimeSignal};
-
+use crate::components::time_signal::BoxedTimeSignalDialogProps;
+use control_box::signal::impulse_fn::ImpulseFunction;
+use control_box::signal::TimeSignal;
 
 pub struct YewImpulse {
     signal: ImpulseFunction<f64>,
@@ -24,22 +23,23 @@ impl YewTimeSignal for YewImpulse {
         Box::new(self.signal.clone())
     }
 }
-fn yew_step_factory() ->  Box<dyn YewTimeSignal + Sync> {
-    Box::new(YewImpulse { signal: ImpulseFunction::<f64>::default() })
+fn yew_step_factory() -> Box<dyn YewTimeSignal + Sync> {
+    Box::new(YewImpulse {
+        signal: ImpulseFunction::<f64>::default(),
+    })
 }
 
 pub fn register() {
     register_time_signal(yew_step_factory);
 }
 
-
-
 #[function_component(ImpulseFunctionDialog)]
 pub fn impulse_function_dialog(props: &BoxedTimeSignalDialogProps) -> Html {
-
     // Runtime reflection (downcasting to concrete type)
     // Variable assignment must be done outside the html! macro
-    let updated = if let Some(step) = props.time_signal.clone()
+    let updated = if let Some(step) = props
+        .time_signal
+        .clone()
         .as_any()
         .downcast_ref::<ImpulseFunction<f64>>()
     {

@@ -1,15 +1,15 @@
 pub mod impulse_fn;
 pub mod named_time_signal_dialog;
-pub mod registry;
 pub mod register_all;
+pub mod registry;
 pub mod step_fn;
 pub mod time_signal;
 pub mod time_signal_select;
 
 pub use register_all::register_build_in_time_signals;
 
-use yew::prelude::*;
 use control_box::signal::BoxedTimeSignal;
+use yew::prelude::*;
 
 #[derive(Properties)]
 pub struct BoxedTimeSignalDialogProps {
