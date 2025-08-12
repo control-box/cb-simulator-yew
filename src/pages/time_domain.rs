@@ -3,7 +3,7 @@ use yew::prelude::*;
 use crate::components::plot_time_signal::AccordeonPlotTimeSignal;
 use crate::components::pt1_time_domain::PlotlyPT1;
 use crate::components::time_range::AccordeonTimeRange;
-use crate::components::time_signal::AccordeonTimeSignals;
+use crate::components::time_signal::time_signal::AccordeonTimeSignals;
 
 use control_box::signal::{NamedTimeSignal, TimeRange};
 

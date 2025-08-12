@@ -8,8 +8,8 @@ use input_rs::yew::Input;
 
 use control_box::signal::*;
 
-use crate::components::named_time_signal_dialog::NamedTimeSignalDialog;
-use crate::components::time_signal_select::*;
+use crate::components::time_signal::named_time_signal_dialog::NamedTimeSignalDialog;
+use crate::components::time_signal::time_signal_select::*;
 
 #[derive(Properties, PartialEq)]
 pub struct AccordeonTimeSignalsProps {

@@ -3,8 +3,8 @@ use yew::prelude::*;
 
 use control_box::signal::*;
 
-use crate::components::impulse_fn::ImpulseFunctionDialog;
-use crate::components::step_fn::StepFunctionDialog;
+use crate::components::time_signal::impulse_fn::ImpulseFunctionDialog;
+use crate::components::time_signal::step_fn::StepFunctionDialog;
 
 #[derive(Properties, PartialEq)]
 pub struct NamedTimeSignalDialogProps {
