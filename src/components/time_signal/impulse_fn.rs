@@ -2,16 +2,17 @@ use input_rs::yew::Input;
 use yew::prelude::*;
 
 use control_box::signal::impulse_fn::ImpulseFunction;
+use control_box::signal::BoxedTimeSignal;
 
 #[derive(Properties, PartialEq)]
 pub struct ImpulseFunctionDialogProps {
-    /// The state handle for managing the value of the input.
-    pub handle: UseStateHandle<ImpulseFunction<f64>>,
+    pub time_signal: ImpulseFunction<f64>,
+    pub on_update: Callback<BoxedTimeSignal<f64>>,
 }
 
 #[function_component(ImpulseFunctionDialog)]
 pub fn impulse_function_dialog(props: &ImpulseFunctionDialogProps) -> Html {
-    let updated = (*props.handle).clone();
+    let updated = props.time_signal.clone();
 
     fn always_valid(_s: String) -> bool {
         true
@@ -40,7 +41,7 @@ pub fn impulse_function_dialog(props: &ImpulseFunctionDialogProps) -> Html {
         duration: (*duration_handle).parse::<f64>().unwrap_or_default(),
     };
 
-    props.handle.set(updated.clone());
+    props.on_update.emit(Box::new(updated));
 
     html! {
         <div>

@@ -2,16 +2,17 @@ use input_rs::yew::Input;
 use yew::prelude::*;
 
 use control_box::signal::step_fn::StepFunction;
+use control_box::signal::{BoxedTimeSignal, DynTimeSignal};
 
 #[derive(Properties, PartialEq)]
 pub struct StepFunctionDialogProps {
-    /// The state handle for managing the value of the input.
-    pub handle: UseStateHandle<StepFunction<f64>>,
+    pub time_signal: StepFunction<f64>,
+    pub on_update: Callback<BoxedTimeSignal<f64>>,
 }
 
 #[function_component(StepFunctionDialog)]
 pub fn step_function_dialog(props: &StepFunctionDialogProps) -> Html {
-    let updated = (*props.handle).clone();
+    let updated = props.time_signal.clone();
 
     fn always_valid(_s: String) -> bool {
         true
@@ -35,7 +36,7 @@ pub fn step_function_dialog(props: &StepFunctionDialogProps) -> Html {
         step_time: (*step_time_handle).parse::<f64>().unwrap_or_default(),
     };
 
-    props.handle.set(updated.clone());
+     props.on_update.emit(Box::new(updated));
 
     html! {
         <div>

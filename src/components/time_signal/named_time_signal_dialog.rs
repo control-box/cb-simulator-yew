@@ -8,66 +8,28 @@ use crate::components::time_signal::step_fn::StepFunctionDialog;
 
 #[derive(Properties, PartialEq)]
 pub struct NamedTimeSignalDialogProps {
-    pub named_time_signal: NamedTimeSignal<f64>,
+    pub time_signal: NamedTimeSignal<f64>,
     /// The state handle for managing the value of the input.
     pub on_update: Callback<NamedTimeSignal<f64>>,
 }
 
 #[function_component(NamedTimeSignalDialog)]
-pub fn named_time_signal_dialog(props: &NamedTimeSignalDialogProps) -> Html {
-    let mut updated = props.named_time_signal.clone();
-    //let name = props.named_time_signal.name.clone();
+pub fn time_signal_dialog(props: &NamedTimeSignalDialogProps) -> Html {
+    let updated = props.time_signal.clone();
+    //let name = props.time_signal.name.clone();
     let name = updated.name.clone();
 
-    let signal_trait_object = props.named_time_signal.signal.clone();
+    let signal_trait_object = props.time_signal.signal.clone();
 
-    // Runtime reflection (downcasting to concrete type)
-    // Variable assignment must be done outside the html! macro
-    let step_fn = if let Some(step) = signal_trait_object
-        .as_any()
-        .downcast_ref::<StepFunction<f64>>()
-    {
-        step.clone()
-    } else {
-        StepFunction::<f64>::default()
+
+    let on_update = {
+        let emitter = props.on_update.clone();
+        let updated = updated.clone();
+        Callback::from(move |signal| {
+            let  updated = updated.clone().set_signal(signal);
+            emitter.emit(updated);
+        })
     };
-    let handle_step = { use_state(|| step_fn.clone()) };
-
-    let impulse_fn = if let Some(impulse) = signal_trait_object
-        .as_any()
-        .downcast_ref::<ImpulseFunction<f64>>()
-    {
-        impulse.clone()
-    } else {
-        ImpulseFunction::<f64>::default()
-    };
-    let handle_impulse = { use_state(|| impulse_fn.clone()) };
-
-    if let Some(step) = props
-        .named_time_signal
-        .signal
-        .clone()
-        .as_any()
-        .downcast_ref::<StepFunction<f64>>()
-    {
-        // Update only if trait object is a StepFunction
-        info!("Step function found: {}", step);
-        updated.signal = Box::new((*handle_step).clone());
-    }
-    if let Some(impulse) = props
-        .named_time_signal
-        .signal
-        .clone()
-        .as_any()
-        .downcast_ref::<ImpulseFunction<f64>>()
-    {
-        // Update only if trait object is an ImpulseFunction
-        info!("Impulse function found: {}", impulse);
-        updated.signal = Box::new((*handle_impulse).clone());
-        props.on_update.emit(updated.clone());
-    }
-
-    props.on_update.emit(updated);
 
     html! {
         <div class="p-4">
@@ -79,14 +41,13 @@ pub fn named_time_signal_dialog(props: &NamedTimeSignalDialogProps) -> Html {
                 </div>
             </div>
             {
-                if let Some(_) = signal_trait_object.as_any().downcast_ref::<StepFunction<f64>>() {
-                    html! { <StepFunctionDialog handle={handle_step} /> }
+                if let Some(s) = signal_trait_object.as_any().downcast_ref::<StepFunction<f64>>() {
+                    html! { <StepFunctionDialog time_signal={s.clone()} on_update={ on_update }/> }
                 } else {
-                    if let Some(_) = signal_trait_object.as_any().downcast_ref::<ImpulseFunction<f64>>() {
-                    // html! { format!("{}", props.named_time_signal.signal.clone()) }
-                    html! { <ImpulseFunctionDialog handle={handle_impulse} /> }
+                    if let Some(s) = signal_trait_object.as_any().downcast_ref::<ImpulseFunction<f64>>() {
+                    html! { <ImpulseFunctionDialog time_signal={s.clone()} on_update={ on_update } /> }
                     } else {
-                        html! { format!("{}", props.named_time_signal.signal.clone()) }
+                        html! { format!("{}", props.time_signal.signal.clone()) }
                     }
                 }
             }

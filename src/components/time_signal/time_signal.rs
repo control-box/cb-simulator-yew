@@ -105,7 +105,7 @@ pub fn accordeon_time_signals(props: &AccordeonTimeSignalsProps) -> Html {
                             <span class="fa-solid fa-minus"></span>
                         </button>
                     </div>
-                    <NamedTimeSignalDialog named_time_signal={signal.clone()} on_update={on_update} />
+                    <NamedTimeSignalDialog time_signal={signal.clone()} on_update={on_update} />
                 </Item>
             }
         })
