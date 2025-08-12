@@ -1,22 +1,11 @@
-use strum::{EnumIter, IntoEnumIterator};
+
 use web_sys::HtmlSelectElement;
 use yew::prelude::*;
+use crate::components::time_signal::registry::{list_factories};
 
 use log::info;
 
-#[derive(Debug, Default)]
-pub struct YewStepFn {}
-
-#[derive(Debug, Default)]
-pub struct YewImpulseFn {}
-
-#[derive(Debug, EnumIter)]
-pub enum TimeSignalTypes {
-    Step(YewStepFn),
-    Impulse(YewImpulseFn),
-}
-
-use control_box::signal::{BoxedTimeSignal, ImpulseFunction, StepFunction};
+use control_box::signal::{BoxedTimeSignal};
 
 #[derive(Properties, PartialEq)]
 pub struct TimeSignalSelectProps {
@@ -26,18 +15,20 @@ pub struct TimeSignalSelectProps {
 #[function_component(TimeSignalSelection)]
 pub fn time_signal_selection(props: &TimeSignalSelectProps) -> Html {
     // Collect options for the select dropdown
-    let time_signal_types = TimeSignalTypes::iter()
+    let time_signal_types = list_factories()
+        .into_iter()
         .enumerate()
-        .map(|(index, signal_type)| {
+        .map(|(index, factory)| {
             html! {
                 <option  value={index.to_string()}
                     selected={index == 0} // if the list get changed always the first element is selected
                 >
-                    { format!("{:?}", signal_type) }
+                    { factory().render() }
                 </option>
             }
         })
-        .collect::<Vec<Html>>();
+        .collect::<Html>();
+
 
     let on_change = {
         let emitter = props.onchange.clone();
@@ -46,18 +37,10 @@ pub fn time_signal_selection(props: &TimeSignalSelectProps) -> Html {
             let target = event.target_dyn_into::<HtmlSelectElement>();
             if let Some(select) = target {
                 let selected = select.value().parse::<usize>().unwrap_or(0);
-                for (pos, element) in TimeSignalTypes::iter().enumerate() {
+                for (pos, factory) in list_factories().into_iter().enumerate() {
                     if pos == selected {
-                        match element {
-                            TimeSignalTypes::Step(_) => {
-                                info!("Selected Step Function");
-                                emitter.emit(Box::new(StepFunction::<f64>::default()));
-                            }
-                            TimeSignalTypes::Impulse(_) => {
-                                info!("Selected Impulse Function");
-                                emitter.emit(Box::new(ImpulseFunction::<f64>::default()));
-                            }
-                        }
+                        info!("ADD: Selected signal type: {}", factory().name());
+                        emitter.emit(factory().signal());
                         break;
                     }
                 }

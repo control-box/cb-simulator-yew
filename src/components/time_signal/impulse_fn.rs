@@ -1,25 +1,41 @@
 use input_rs::yew::Input;
 use yew::prelude::*;
 
+use control_box::signal::TimeSignal;
 use control_box::signal::impulse_fn::ImpulseFunction;
-use control_box::signal::BoxedTimeSignal;
+use crate::components::time_signal::BoxedTimeSignalDialogProps;
+use crate::components::time_signal::registry::{register_time_signal, YewTimeSignal};
 
-#[derive(Properties)]
-pub struct ImpulseFunctionDialogProps {
-    pub time_signal: BoxedTimeSignal<f64>,
-    pub on_update: Callback<BoxedTimeSignal<f64>>,
+
+pub struct YewImpulse {
+    signal: ImpulseFunction<f64>,
 }
 
-// explicit implementation because PartialEq via derive requires the Copy bound
-// Copy bound cannot be implemented for Boxed objects
-impl PartialEq for ImpulseFunctionDialogProps {
-    fn eq(&self, other: &Self) -> bool {
-        self.time_signal.clone() == other.time_signal.clone() && self.on_update == other.on_update
+impl YewTimeSignal for YewImpulse {
+    fn name(&self) -> &'static str {
+        self.signal.short_type_name()
+    }
+
+    fn render(&self) -> Html {
+        html! { <> { self.signal.short_type_name() } </> }
+    }
+
+    fn signal(&self) -> Box<dyn control_box::signal::DynTimeSignal<f64> + Send + Sync> {
+        Box::new(self.signal.clone())
     }
 }
+fn yew_step_factory() ->  Box<dyn YewTimeSignal + Sync> {
+    Box::new(YewImpulse { signal: ImpulseFunction::<f64>::default() })
+}
+
+pub fn register() {
+    register_time_signal(yew_step_factory);
+}
+
+
 
 #[function_component(ImpulseFunctionDialog)]
-pub fn impulse_function_dialog(props: &ImpulseFunctionDialogProps) -> Html {
+pub fn impulse_function_dialog(props: &BoxedTimeSignalDialogProps) -> Html {
 
     // Runtime reflection (downcasting to concrete type)
     // Variable assignment must be done outside the html! macro

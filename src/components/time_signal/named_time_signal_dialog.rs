@@ -1,4 +1,4 @@
-use log::info;
+
 use yew::prelude::*;
 
 use control_box::signal::*;
