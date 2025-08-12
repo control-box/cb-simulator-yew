@@ -1,6 +1,6 @@
 use accordion_rs::yew::{Accordion, Item, List};
 use accordion_rs::Size;
-use log::info;
+use log::{info, debug};
 use std::vec::Vec;
 use yew::prelude::*;
 
@@ -44,7 +44,7 @@ pub fn accordeon_time_signals(props: &AccordeonTimeSignalsProps) -> Html {
             let new = (*new_handle).clone();
             info!("Add new signal: {}", new);
             signals.push(new.clone());
-            let new_name = format!("Signal-{}", signals.len() + 1);
+            let new_name = format!("{}-{}", new.signal.short_type_name(), signals.len() + 1);
             signals_handle.set(signals);
             name_handle.set(new_name.clone());
 
@@ -113,11 +113,16 @@ pub fn accordeon_time_signals(props: &AccordeonTimeSignalsProps) -> Html {
 
     let on_signal_type_change: Callback<BoxedTimeSignal<f64>> = {
         let new_handle = new_handle.clone();
+        let name_handle = name_handle.clone();
+        let signals_handle = signals_handle.clone();
 
         Callback::from(move |signal: BoxedTimeSignal<f64>| {
+            let signals_len = (*signals_handle).len();
+            let type_name = format!("{}-{}", signal.short_type_name(), signals_len + 1);
             let new_named_signal = (*new_handle).clone().set_signal(signal);
             info!("Signal_type_change: {}", new_named_signal);
             new_handle.set(new_named_signal);
+            name_handle.set(type_name);
         })
     };
 
