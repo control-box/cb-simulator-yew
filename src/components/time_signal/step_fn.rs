@@ -2,17 +2,34 @@ use input_rs::yew::Input;
 use yew::prelude::*;
 
 use control_box::signal::step_fn::StepFunction;
-use control_box::signal::{BoxedTimeSignal, DynTimeSignal};
+use control_box::signal::BoxedTimeSignal;
 
-#[derive(Properties, PartialEq)]
+#[derive(Properties)]
 pub struct StepFunctionDialogProps {
-    pub time_signal: StepFunction<f64>,
+    pub time_signal: BoxedTimeSignal<f64>,
     pub on_update: Callback<BoxedTimeSignal<f64>>,
+}
+
+// explicit implementation because PartialEq via derive requires the Copy bound
+// Copy bound cannot be implemented for Boxed objects
+impl PartialEq for StepFunctionDialogProps {
+    fn eq(&self, other: &Self) -> bool {
+        self.time_signal.clone() == other.time_signal.clone() && self.on_update == other.on_update
+    }
 }
 
 #[function_component(StepFunctionDialog)]
 pub fn step_function_dialog(props: &StepFunctionDialogProps) -> Html {
-    let updated = props.time_signal.clone();
+    // Runtime reflection (downcasting to concrete type)
+    // Variable assignment must be done outside the html! macro
+    let updated = if let Some(step) = props.time_signal.clone()
+        .as_any()
+        .downcast_ref::<StepFunction<f64>>()
+    {
+        step.clone()
+    } else {
+        StepFunction::<f64>::default()
+    };
 
     fn always_valid(_s: String) -> bool {
         true

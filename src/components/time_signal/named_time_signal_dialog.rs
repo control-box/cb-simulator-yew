@@ -19,9 +19,6 @@ pub fn time_signal_dialog(props: &NamedTimeSignalDialogProps) -> Html {
     //let name = props.time_signal.name.clone();
     let name = updated.name.clone();
 
-    let signal_trait_object = props.time_signal.signal.clone();
-
-
     let on_update = {
         let emitter = props.on_update.clone();
         let updated = updated.clone();
@@ -31,6 +28,7 @@ pub fn time_signal_dialog(props: &NamedTimeSignalDialogProps) -> Html {
         })
     };
 
+    let signal = props.time_signal.signal.clone();
     html! {
         <div class="p-4">
         <div class="flex content-start flex-row rounded border p-2 border-gray-400 dark:border-gray-600">
@@ -41,14 +39,11 @@ pub fn time_signal_dialog(props: &NamedTimeSignalDialogProps) -> Html {
                 </div>
             </div>
             {
-                if let Some(s) = signal_trait_object.as_any().downcast_ref::<StepFunction<f64>>() {
-                    html! { <StepFunctionDialog time_signal={s.clone()} on_update={ on_update }/> }
-                } else {
-                    if let Some(s) = signal_trait_object.as_any().downcast_ref::<ImpulseFunction<f64>>() {
-                    html! { <ImpulseFunctionDialog time_signal={s.clone()} on_update={ on_update } /> }
-                    } else {
-                        html! { format!("{}", props.time_signal.signal.clone()) }
-                    }
+
+                match signal.clone().short_type_name() {
+                    "Step" => html! { <StepFunctionDialog time_signal={signal.clone()} on_update={ on_update }/> },
+                    "Impulse" => html! { <ImpulseFunctionDialog time_signal={signal.clone()} on_update={ on_update } /> },
+                    _ => html! { format!("{}", signal.clone()) }
                 }
             }
             </div>
