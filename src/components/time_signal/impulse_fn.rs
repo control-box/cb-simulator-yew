@@ -1,5 +1,6 @@
 use input_rs::yew::Input;
 use yew::prelude::*;
+use log::info;
 
 use crate::components::time_signal::registry::{register_time_signal, YewTimeSignal};
 use crate::components::time_signal::BoxedTimeSignalDialogProps;
@@ -35,14 +36,15 @@ impl YewTimeSignal for YewImpulse {
         Box::new(self.signal.clone())
     }
 }
-fn yew_step_factory() -> Box<dyn YewTimeSignal + Sync> {
+fn yew_impulse_factory() -> Box<dyn YewTimeSignal + Sync> {
     Box::new(YewImpulse {
         signal: ImpulseFunction::<f64>::default(),
     })
 }
 
 pub fn register() {
-    register_time_signal(yew_step_factory);
+    info!("Registering YewImpulseFunction");
+    register_time_signal(yew_impulse_factory);
 }
 
 #[function_component(ImpulseFunctionDialog)]
