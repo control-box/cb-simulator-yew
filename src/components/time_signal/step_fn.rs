@@ -105,7 +105,7 @@ pub fn step_function_dialog(props: &BoxedTimeSignalDialogProps) -> Html {
                 required={true}
                 error_message="Must be a number"
                 class="form-field w-64"
-                label_class="block text-sm mb-2"
+                label_class="block text-sm mb-2 text-gray-300 dark:text-gray-700"
                 input_class="w-full p-2 border border-gray-400 dark:border-gray-600 rounded"
                 error_class="text-red-800"
             />
@@ -121,7 +121,7 @@ pub fn step_function_dialog(props: &BoxedTimeSignalDialogProps) -> Html {
                 required={true}
                 error_message="Must be a number"
                 class="form-field w-64"
-                label_class="block text-sm mb-2"
+                label_class="block text-sm mb-2 text-gray-300 dark:text-gray-700"
                 input_class="w-full p-2 border border-gray-400 dark:border-gray-600 rounded"
                 error_class="error-text"
             />
@@ -137,7 +137,7 @@ pub fn step_function_dialog(props: &BoxedTimeSignalDialogProps) -> Html {
                 required={true}
                 error_message="Must greater than post_value Time"
                 class="form-field w-64"
-                label_class="block text-sm mb-2"
+                label_class="block text-sm mb-2 text-gray-300 dark:text-gray-700"
                 input_class="w-full p-2 border border-gray-400 dark:border-gray-600 rounded"
                 error_class="error-text"
             />

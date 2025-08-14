@@ -12,7 +12,8 @@ use yew_plotly::Plotly;
 
 use yew_accordion::{Accordion, AccordionButton, AccordionItem};
 
-use control_box::pt1::PT1;
+use control_box::plant::TransferTimeDomain;
+use control_box::plant::pt1::PT1;
 
 #[derive(Properties, PartialEq)]
 pub struct PlotlyPT1Props {
@@ -61,8 +62,8 @@ pub fn plotly_pt1(PlotlyPT1Props { t1, ts, kp }: &PlotlyPT1Props) -> Html {
     let u: Array<f64, Ix1> = t.iter().map(|v| if *v > 0. { 1. } else { 0. }).collect();
 
     // PT1 response
-    let mut pt1 = PT1::<f64>::new(*ts as f64 * 1000.0, *t1 as f64 * 1000.0, *kp);
-    let y: Array<f64, Ix1> = u.iter().map(|v| pt1.transfer(*v)).collect();
+    let mut pt1 = PT1::<f64>::default().set_sample_time(*ts as f64 * 1000.0).set_t1_time(*t1 as f64 * 1000.0).set_kp(*kp);
+    let y: Array<f64, Ix1> = u.iter().map(|v| pt1.transfer_td(*v)).collect();
 
     let mut plot = Plot::new();
     let trace = Scatter::from_array(t.clone(), u)
