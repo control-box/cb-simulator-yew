@@ -8,9 +8,9 @@ use input_rs::yew::Input;
 
 use control_box::plant::BoxedTransferTimeDomain;
 
+use crate::components::plant::element_select::*;
 use crate::components::plant::named_element::NamedElement;
 use crate::components::plant::named_element_dialog::NamedElementDialog;
-use crate::components::plant::element_select::*;
 
 #[derive(Properties, PartialEq)]
 pub struct AccordeonElementsProps {

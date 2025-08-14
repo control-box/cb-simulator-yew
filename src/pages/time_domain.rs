@@ -1,14 +1,13 @@
 use yew::prelude::*;
 
+use crate::components::plant::element::AccordeonElements;
+use crate::components::plot_element::AccordeonPlotElement;
 use crate::components::plot_time_signal::AccordeonPlotTimeSignal;
-use crate::components::pt1_time_domain::PlotlyPT1;
 use crate::components::time_range::AccordeonTimeRange;
 use crate::components::time_signal::time_signal::AccordeonTimeSignals;
-use crate::components::plot_element::AccordeonPlotElement;
-use crate::components::plant::element::AccordeonElements;
 
-use control_box::signal::{NamedTimeSignal, TimeRange};
 use crate::components::plant::named_element::NamedElement;
+use control_box::signal::{NamedTimeSignal, TimeRange};
 
 #[function_component(TimeDomain)]
 pub fn time_domain() -> Html {
@@ -29,10 +28,8 @@ pub fn time_domain() -> Html {
 
             <AccordeonPlotTimeSignal range={time_range.clone()} signals={signals.clone()} />
             <AccordeonPlotElement range={time_range.clone()} signals={signals} elements={elements} />
-            <PlotlyPT1 />
 
         </>
 
     }
-
 }

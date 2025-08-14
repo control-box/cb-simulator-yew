@@ -1,6 +1,6 @@
 use input_rs::yew::Input;
-use yew::prelude::*;
 use log::info;
+use yew::prelude::*;
 
 use crate::components::time_signal::registry::{register_time_signal, YewTimeSignal};
 use crate::components::time_signal::BoxedTimeSignalDialogProps;

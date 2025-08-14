@@ -1,6 +1,6 @@
 use input_rs::yew::Input;
-use yew::prelude::*;
 use log::info;
+use yew::prelude::*;
 
 use crate::components::plant::registry::{register_element, YewElement};
 use crate::components::plant::BoxedElementDialogProps;
@@ -50,12 +50,7 @@ pub fn register() {
 pub fn pt1_element_dialog(props: &BoxedElementDialogProps) -> Html {
     // Runtime reflection (downcasting to concrete type)
     // Variable assignment must be done outside the html! macro
-    let updated = if let Some(pt1) = props
-        .element
-        .clone()
-        .as_any()
-        .downcast_ref::<PT1<f64>>()
-    {
+    let updated = if let Some(pt1) = props.element.clone().as_any().downcast_ref::<PT1<f64>>() {
         pt1.clone()
     } else {
         PT1::<f64>::default()

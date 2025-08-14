@@ -1,7 +1,7 @@
 use yew::prelude::*;
 
-use crate::components::plant::registry::list_factories;
 use crate::components::plant::named_element::NamedElement;
+use crate::components::plant::registry::list_factories;
 #[derive(Properties, PartialEq)]
 pub struct NamedElementDialogProps {
     pub element: NamedElement<f64>,

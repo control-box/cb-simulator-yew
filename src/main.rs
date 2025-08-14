@@ -3,8 +3,8 @@ mod components;
 mod pages;
 mod router;
 
-use components::time_signal::register_build_in_time_signals;
 use components::plant::register_all::register_build_in_elements;
+use components::time_signal::register_build_in_time_signals;
 
 fn main() {
     console_error_panic_hook::set_once();

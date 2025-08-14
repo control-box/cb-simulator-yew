@@ -1,11 +1,10 @@
-
 pub mod element;
 pub mod element_select;
 pub mod named_element;
 pub mod named_element_dialog;
 pub mod pt1;
-pub mod registry;
 pub mod register_all;
+pub mod registry;
 
 use control_box::plant::BoxedTransferTimeDomain;
 use yew::prelude::*;

@@ -1,18 +1,17 @@
 use accordion_rs::yew::{Accordion, Item, List};
 use accordion_rs::Size;
 use ndarray::{Array, Ix1};
+use plotly::common::AxisSide;
 use plotly::{layout::Axis, Layout, Scatter};
 use yew::prelude::*;
-use yew_plotly::plotly::common::Mode;
+use yew_plotly::plotly::common::{Mode, Title};
 use yew_plotly::plotly::Plot;
 use yew_plotly::Plotly;
 
 use web_sys::HtmlSelectElement;
 
-use control_box::signal::{NamedTimeSignal, TimeRange};
 use crate::components::plant::named_element::NamedElement;
-
-
+use control_box::signal::{NamedTimeSignal, TimeRange};
 
 #[derive(Properties, PartialEq)]
 pub struct ElementProps {
@@ -27,25 +26,37 @@ pub struct ElementProps {
 #[function_component(PlotElement)]
 pub fn plotly_time_signal(props: &ElementProps) -> Html {
     let time: Array<f64, Ix1> = props.range.collect();
-    let signal_struct = props.signal.signal.clone();
-    let signal: Array<f64, Ix1> = time
-        .iter()
-        .map(|v| signal_struct.time_to_signal(*v))
-        .collect();
+    let signal = props.signal.signal.clone();
+    let input: Array<f64, Ix1> = time.iter().map(|v| signal.time_to_signal(*v)).collect();
+    let mut element = props.element.element.clone();
+    let output: Array<f64, Ix1> = input.iter().map(|v| element.transfer_td(*v)).collect();
 
     let mut plot = Plot::new();
-    let trace = Scatter::from_array(time.clone(), signal)
+    let input_trace = Scatter::from_array(time.clone(), input)
         .mode(Mode::LinesMarkers)
-        .show_legend(false)
-        .name("Time signal");
-    plot.add_trace(trace);
+        .show_legend(true)
+        .name("Input signal");
+    let output_trace = Scatter::from_array(time.clone(), output)
+        .mode(Mode::LinesMarkers)
+        .show_legend(true)
+        .name("Output signal")
+        .y_axis("y2");
+
+    plot.add_trace(input_trace);
+    plot.add_trace(output_trace);
 
     let layout = Layout::new()
-        .title("<b>Signal in Time Domain</b>".into())
+        .title("<b>Transfer function of Element in Time Domain</b>".into())
         .x_axis(
             Axis::new().title("time [ms]".into()), // plotly 0.8.3 does not support From<String>
         )
-        .y_axis(Axis::new().title("Signal Amplitude".into()));
+        .y_axis(Axis::new().title("Input Amplitude".into()))
+        .y_axis2(
+            Axis::new()
+                .title(Title::from("Output Amplitude"))
+                .overlaying("y")
+                .side(AxisSide::Right),
+        );
     plot.set_layout(layout);
 
     html! {
