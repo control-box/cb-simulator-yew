@@ -52,7 +52,8 @@ Open [http://localhost:8080/control-box](http://localhost:8080/cb-simulator-yew)
 
 ### Development
 
-
+- main branch is used to build the app and publish it at gh-pages
+- ci only checks for code sanity (build, test, doc/doc-test)
 
 ## License
 
