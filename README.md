@@ -20,29 +20,43 @@ A Rust/Yew web application for simulating and visualizing time-domain signals.
 
 ### Build & Run
 
-```sh
-trunk serve --open
-```
+1. **Install dependencies:**
+    ```bash
+    cargo install trunk
+    npm install
+    ```
+
+1. **Create tailwindcss output:**
+    ```bash
+    npm run build:css
+    ```
+
+
+2. **Run the development server:**
+    ```bash
+    trunk serve --open
+    ```
+
+3. **Build for production:**
+    ```bash
+    trunk build --release
+    ```
+
 
 Open [http://localhost:8080/control-box](http://localhost:8080/control-box) in your browser.
 
 ### Project Structure
 
-- `simulator/src/components/` — Yew components (signal, range, plot, dialogs)
-- `simulator/src/pages/` — Application pages
-- `control-box/src/signal/` — Signal trait and implementations
+
 - `build.rs` — Embeds git and version info into the build
 
 ### Development
 
-- Edit Rust/Yew code in `simulator/src/`
-- Add new signal types in `control-box/src/signal/`
-- Use Trunk for hot-reload and WASM builds
+
 
 ## License
 
-MIT
-
+MIT — see [`LICENSE.md`](LICENSE.md)
 
 ---
 

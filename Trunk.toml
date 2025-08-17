@@ -1,5 +1,5 @@
 [build]
-public_url = "/control-box/"
+public_url = "/cb-simulator-yew/"
 dist = "dist"
 filehash = false
 minify = "on_release"

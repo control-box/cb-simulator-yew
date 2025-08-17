@@ -1,1 +1,4 @@
 dist
+target
+styles
+node_modules
