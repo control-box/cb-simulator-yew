@@ -6,7 +6,7 @@ use yew::prelude::*;
 
 use input_rs::yew::Input;
 
-use control_box::plant::BoxedTransferTimeDomain;
+use cb_simulation_util::plant::BoxedTransferTimeDomain;
 
 use crate::components::plant::element_select::*;
 use crate::components::plant::named_element_dialog::NamedElementDialog;

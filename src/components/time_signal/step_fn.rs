@@ -4,7 +4,7 @@ use yew::prelude::*;
 
 use crate::components::time_signal::BoxedTimeSignalDialogProps;
 use crate::time_signal::registry::{register_time_signal, YewTimeSignal};
-use control_box::signal::{step_fn::StepFunction, DynTimeSignal, TimeSignal};
+use cb_simulation_util::signal::{step_fn::StepFunction, DynTimeSignal, TimeSignal};
 
 pub struct YewStep {
     signal: StepFunction<f64>,
@@ -31,7 +31,7 @@ impl YewTimeSignal for YewStep {
         html! { <> { self.signal.short_type_name() } </> }
     }
 
-    fn signal(&self) -> Box<dyn control_box::signal::DynTimeSignal<f64> + Send + Sync> {
+    fn signal(&self) -> Box<dyn cb_simulation_util::signal::DynTimeSignal<f64> + Send + Sync> {
         Box::new(self.signal.clone())
     }
 }

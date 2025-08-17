@@ -4,7 +4,7 @@ use yew::prelude::*;
 
 use log::info;
 
-use control_box::plant::BoxedTransferTimeDomain;
+use cb_simulation_util::plant::BoxedTransferTimeDomain;
 
 #[derive(Properties, PartialEq)]
 pub struct ElementSelectProps {

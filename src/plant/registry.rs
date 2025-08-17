@@ -1,4 +1,4 @@
-use control_box::plant::DynTransferTimeDomain;
+use cb_simulation_util::plant::DynTransferTimeDomain;
 use yew::{Callback, Html};
 
 use once_cell::sync::Lazy;

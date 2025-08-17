@@ -1,4 +1,4 @@
-use control_box::signal::DynTimeSignal;
+use cb_simulation_util::signal::DynTimeSignal;
 use yew::{Callback, Html};
 
 use once_cell::sync::Lazy;

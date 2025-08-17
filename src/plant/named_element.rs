@@ -4,8 +4,8 @@ use core::fmt::Display;
 
 use std::{borrow::ToOwned, boxed::Box, string::String};
 
-use control_box::plant::TypeIdentifier;
-use control_box::plant::{pt1::PT1, BoxedTransferTimeDomain, TransferTimeDomain};
+use cb_simulation_util::plant::TypeIdentifier;
+use cb_simulation_util::plant::{pt1::PT1, BoxedTransferTimeDomain, TransferTimeDomain};
 
 #[derive(Debug, Clone)]
 pub struct NamedElement<S: Debug + Display + Clone + Copy + PartialEq + 'static> {

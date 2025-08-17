@@ -3,7 +3,7 @@ pub mod element_select;
 pub mod named_element_dialog;
 pub mod pt1;
 
-use control_box::plant::BoxedTransferTimeDomain;
+use cb_simulation_util::plant::BoxedTransferTimeDomain;
 use yew::prelude::*;
 
 #[derive(Properties)]

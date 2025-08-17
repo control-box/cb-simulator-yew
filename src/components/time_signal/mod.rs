@@ -4,7 +4,7 @@ pub mod step_fn;
 pub mod time_signal;
 pub mod time_signal_select;
 
-use control_box::signal::BoxedTimeSignal;
+use cb_simulation_util::signal::BoxedTimeSignal;
 use yew::prelude::*;
 
 #[derive(Properties)]

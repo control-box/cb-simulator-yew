@@ -4,7 +4,7 @@
 //!
 //! ```rust
 //! use ndarray::{Array, Ix1};
-//! use control_box::signal::{TimeRange, StepFunction, TimeSignal, SuperPosition};
+//! use cb_simulation_util::signal::{TimeRange, StepFunction, TimeSignal, SuperPosition};
 //!
 //! fn main () {
 //!   let time: Array<f64, Ix1> = TimeRange::default().collect();
@@ -24,8 +24,8 @@ use num_traits::Num;
 
 use std::{borrow::ToOwned, boxed::Box, string::String};
 
-pub use control_box::signal::step_fn::StepFunction;
-use control_box::signal::BoxedTimeSignal;
+pub use cb_simulation_util::signal::step_fn::StepFunction;
+use cb_simulation_util::signal::BoxedTimeSignal;
 
 #[derive(Debug, Clone)]
 pub struct NamedTimeSignal<S: Num + Debug + Display + Clone + Copy + PartialEq + 'static> {

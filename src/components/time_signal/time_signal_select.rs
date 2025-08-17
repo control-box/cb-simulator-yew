@@ -4,7 +4,7 @@ use yew::prelude::*;
 
 use log::info;
 
-use control_box::signal::BoxedTimeSignal;
+use cb_simulation_util::signal::BoxedTimeSignal;
 
 #[derive(Properties, PartialEq)]
 pub struct TimeSignalSelectProps {

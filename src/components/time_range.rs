@@ -3,7 +3,7 @@ use accordion_rs::Size;
 use input_rs::yew::Input;
 use yew::prelude::*;
 
-use control_box::signal::TimeRange;
+use cb_simulation_util::signal::TimeRange;
 
 #[derive(Properties, PartialEq)]
 pub struct TimeRangeDialogProps {

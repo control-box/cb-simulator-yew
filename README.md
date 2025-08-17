@@ -43,7 +43,7 @@ A Rust/Yew web application for simulating and visualizing time-domain signals.
     ```
 
 
-Open [http://localhost:8080/control-box](http://localhost:8080/control-box) in your browser.
+Open [http://localhost:8080/control-box](http://localhost:8080/cb-simulator-yew) in your browser.
 
 ### Project Structure
 

@@ -8,7 +8,7 @@ use crate::components::time_signal::time_signal::AccordeonTimeSignals;
 
 use crate::plant::named_element::NamedElement;
 use crate::time_signal::named_time_signal::NamedTimeSignal;
-use control_box::signal::TimeRange;
+use cb_simulation_util::signal::TimeRange;
 
 #[function_component(TimeDomain)]
 pub fn time_domain() -> Html {

@@ -4,8 +4,8 @@ use yew::prelude::*;
 
 use crate::components::time_signal::BoxedTimeSignalDialogProps;
 use crate::time_signal::registry::{register_time_signal, YewTimeSignal};
-use control_box::signal::impulse_fn::ImpulseFunction;
-use control_box::signal::{DynTimeSignal, TimeSignal};
+use cb_simulation_util::signal::impulse_fn::ImpulseFunction;
+use cb_simulation_util::signal::{DynTimeSignal, TimeSignal};
 
 pub struct YewImpulse {
     signal: ImpulseFunction<f64>,
@@ -32,7 +32,7 @@ impl YewTimeSignal for YewImpulse {
         html! { <> { self.signal.short_type_name() } </> }
     }
 
-    fn signal(&self) -> Box<dyn control_box::signal::DynTimeSignal<f64> + Send + Sync> {
+    fn signal(&self) -> Box<dyn cb_simulation_util::signal::DynTimeSignal<f64> + Send + Sync> {
         Box::new(self.signal.clone())
     }
 }

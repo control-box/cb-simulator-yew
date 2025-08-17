@@ -4,7 +4,7 @@ use yew::prelude::*;
 
 use crate::components::plant::BoxedElementDialogProps;
 use crate::plant::registry::{register_element, YewElement};
-use control_box::plant::{pt1::PT1, DynTransferTimeDomain, TypeIdentifier};
+use cb_simulation_util::plant::{pt1::PT1, DynTransferTimeDomain, TypeIdentifier};
 
 pub struct YewStep {
     element: PT1<f64>,
