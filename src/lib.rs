@@ -1,9 +1,9 @@
 pub mod app;
 pub mod components;
 mod pages;
-mod plant;
+pub mod plant;
 mod router;
-mod time_signal;
+pub mod time_signal;
 
 use plant::register_all::register_build_in_elements;
 use time_signal::register_build_in_time_signals;
