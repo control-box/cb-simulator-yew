@@ -1,15 +1,14 @@
 use accordion_rs::yew::{Accordion, Item, List};
 use accordion_rs::Size;
+use input_rs::yew::Input;
 use log::info;
 use std::vec::Vec;
 use yew::prelude::*;
 
-use input_rs::yew::Input;
-
-use control_box::signal::*;
-
 use crate::components::time_signal::named_time_signal_dialog::NamedTimeSignalDialog;
 use crate::components::time_signal::time_signal_select::*;
+use crate::time_signal::named_time_signal::NamedTimeSignal;
+use control_box::signal::BoxedTimeSignal;
 
 #[derive(Properties, PartialEq)]
 pub struct AccordeonTimeSignalsProps {

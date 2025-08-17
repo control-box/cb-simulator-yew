@@ -10,8 +10,9 @@ use yew_plotly::Plotly;
 
 use web_sys::HtmlSelectElement;
 
-use crate::components::plant::named_element::NamedElement;
-use control_box::signal::{NamedTimeSignal, TimeRange};
+use crate::plant::named_element::NamedElement;
+use crate::time_signal::named_time_signal::NamedTimeSignal;
+use control_box::signal::TimeRange;
 
 #[derive(Properties, PartialEq)]
 pub struct ElementProps {

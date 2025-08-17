@@ -1,7 +1,8 @@
 use yew::prelude::*;
 
-use crate::components::time_signal::registry::list_factories;
-use control_box::signal::*;
+use crate::time_signal::named_time_signal::NamedTimeSignal;
+use crate::time_signal::registry::list_factories;
+
 #[derive(Properties, PartialEq)]
 pub struct NamedTimeSignalDialogProps {
     pub time_signal: NamedTimeSignal<f64>,

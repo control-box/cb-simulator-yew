@@ -1,4 +1,4 @@
-use crate::components::plant::registry::list_factories;
+use crate::plant::registry::list_factories;
 use web_sys::HtmlSelectElement;
 use yew::prelude::*;
 

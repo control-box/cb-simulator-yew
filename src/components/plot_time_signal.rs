@@ -9,7 +9,8 @@ use yew_plotly::Plotly;
 
 use web_sys::HtmlSelectElement;
 
-use control_box::signal::{NamedTimeSignal, TimeRange};
+use crate::time_signal::named_time_signal::NamedTimeSignal;
+use control_box::signal::TimeRange;
 
 #[derive(Properties, PartialEq)]
 pub struct TimeSignalProps {

@@ -1,28 +1,29 @@
 [package]
-name = "simulator"
-version = "0.1.0"
+name = "cb-simulator-yew"
+version = "0.2.0"
 edition = "2021"
 build = "build.rs"
 
 [dependencies]
+
+control-box = { path = "../control-box", features = [ "std" ]}
+
+accordion-rs = { version = "0.2.6", features = ["yew"] }
+console_error_panic_hook = "0.1.7"
+# for theming
+gloo = { version = "0.11", features = ["storage", "utils"] }
+input-rs = { version = "0.2.5", features = ["yew"] }
+log = "0.4.27"
 ndarray = "0.15.6"
+num-traits = "0.2.19"
+# for registry
+once_cell = "1.21.3"
 plotly = { version = "0.8.3", features = ["plotly_ndarray", "wasm"] }
+wasm-bindgen = "0.2.100"
+wasm-logger = "0.2.0"
+web-sys = { version = "0.3.77", features = ["HtmlSelectElement", "HtmlCollection","Document", "Element", "DomTokenList"] }
 yew = { version = "0.21.0", features = ["csr"] }
+yew-accordion = "0.1.2"
 yew-hooks = "0.3.3"
 yew-plotly = { version = "0.3.0" }
-control-box = { path = "../control-box", features = [ "std" ]}
-yew-accordion = "0.1.2"
-wasm-logger = "0.2.0"
-console_error_panic_hook = "0.1.7"
 yew-router = "0.18.0"
-wasm-bindgen = "0.2.100"
-input-rs = { version = "0.2.5", features = ["yew"] }
-accordion-rs = { version = "0.2.6", features = ["yew"] }
-log = "0.4.27"
-web-sys = { version = "0.3.77", features = ["HtmlSelectElement", "HtmlCollection","Document", "Element", "DomTokenList"] }
-strum = { version = "0.27.2", features = ["derive"] }
-strum_macros = "0.27.2"
-gloo = { version = "0.11", features = ["storage", "utils"] }
-once_cell = "1.21.3"
-
-

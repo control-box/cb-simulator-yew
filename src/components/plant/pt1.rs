@@ -2,8 +2,8 @@ use input_rs::yew::Input;
 use log::info;
 use yew::prelude::*;
 
-use crate::components::plant::registry::{register_element, YewElement};
 use crate::components::plant::BoxedElementDialogProps;
+use crate::plant::registry::{register_element, YewElement};
 use control_box::plant::{pt1::PT1, DynTransferTimeDomain, TypeIdentifier};
 
 pub struct YewStep {

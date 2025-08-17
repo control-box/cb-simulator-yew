@@ -2,8 +2,8 @@ use input_rs::yew::Input;
 use log::info;
 use yew::prelude::*;
 
-use crate::components::time_signal::registry::{register_time_signal, YewTimeSignal};
 use crate::components::time_signal::BoxedTimeSignalDialogProps;
+use crate::time_signal::registry::{register_time_signal, YewTimeSignal};
 use control_box::signal::impulse_fn::ImpulseFunction;
 use control_box::signal::{DynTimeSignal, TimeSignal};
 
