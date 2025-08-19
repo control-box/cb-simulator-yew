@@ -2,6 +2,7 @@ pub mod element;
 pub mod element_select;
 pub mod named_element_dialog;
 pub mod pt1;
+pub mod pt2;
 
 use cb_simulation_util::plant::BoxedTransferTimeDomain;
 use yew::prelude::*;
