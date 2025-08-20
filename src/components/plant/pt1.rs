@@ -61,6 +61,17 @@ pub fn pt1_element_dialog(props: &BoxedElementDialogProps) -> Html {
         true
     }
 
+    // Validation closure for t1_time
+    let t1_time_valid = {
+        let sample_time = props.sample_time;
+        Callback::from(move |s: String| {
+            match s.parse::<f64>() {
+                Ok(value) => value > sample_time,
+                Err(_) => false,
+            }
+        })
+    };
+
     let kp_ref = use_node_ref();
     let kp_handle = use_state(|| updated.kp.to_string());
     let kp_valid_handle = use_state(|| true);
@@ -72,7 +83,7 @@ pub fn pt1_element_dialog(props: &BoxedElementDialogProps) -> Html {
     let updated = PT1::<f64>::default()
         .set_sample_time_or_default(props.sample_time.clone())
         .set_t1_time_or_default((*t1_time_handle).parse::<f64>().unwrap_or_default())
-        .set_kp((*kp_handle).parse::<f64>().unwrap_or_default());
+        .set_kp((*kp_handle).parse::<f64>().unwrap_or(1.0));
     info!("PT1 updated: {}", updated);
     props.on_update.emit(Box::new(updated));
 
@@ -106,11 +117,11 @@ pub fn pt1_element_dialog(props: &BoxedElementDialogProps) -> Html {
                 r#ref={t1_time_ref}
                 handle={t1_time_handle}
                 valid_handle={t1_time_valid_handle}
-                validate_function={always_valid}
+                validate_function={t1_time_valid}
 
                 label="Time t1 [ms]"
                 required={true}
-                error_message="Must be a number"
+                error_message="Must be a number and greater than sample time"
                 class="form-field w-64"
                 label_class="block text-sm mb-2 text-gray-300 dark:text-gray-700"
                 input_class="w-full p-2 border border-gray-400 dark:border-gray-600 rounded"

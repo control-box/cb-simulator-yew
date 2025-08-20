@@ -1,5 +1,5 @@
 use yew::prelude::*;
-use crate::components::about_git::AboutGit;
+use crate::components::customized_about::CustomizedAbout;
 
 const SIMULATOR_YEW: &str = env!("DEP_CB_SIMULATOR_YEW_VERSION");
 const SIMULATION_UTIL: &str = env!("DEP_CB_SIMULATION_UTIL_VERSION");
@@ -24,10 +24,11 @@ pub fn about() -> Html {
             </div>
             <hr class="my-4 h-0.5 border-t-0 bg-gray-400 dark:bg-gray-600" />
             <div class="">
-                <p> <AboutGit/> </p>
                 <p>{ format!("Crate cb-simulator-yew: {}", SIMULATOR_YEW) }</p>
                 <p>{ format!("Crate cb-simulation-util: {}", SIMULATION_UTIL) }</p>
             </div>
+            <hr class="my-4 h-0.5 border-t-0 bg-gray-400 dark:bg-gray-600" />
+            <CustomizedAbout />
 
         </div>
     }

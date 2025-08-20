@@ -29,6 +29,7 @@ pub fn accordeon_elements(props: &AccordeonElementsProps) -> Html {
     let new_handle = use_state_eq(|| {
         NamedElement::<f64>::default().set_name(format!("PT0-{}", props.elements.len() + 1))
     });
+
     fn always_valid(_s: String) -> bool {
         true
     }

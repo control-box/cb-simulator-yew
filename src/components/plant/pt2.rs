@@ -68,6 +68,17 @@ pub fn pt2_element_dialog(props: &BoxedElementDialogProps) -> Html {
         }
     }
 
+    // Validation closure for t1_time
+    let t1_time_valid = {
+        let sample_time = props.sample_time;
+        Callback::from(move |s: String| {
+            match s.parse::<f64>() {
+                Ok(value) => value > sample_time,
+                Err(_) => false,
+            }
+        })
+    };
+
     let kp_ref = use_node_ref();
     let kp_handle = use_state(|| updated.kp.to_string());
     let kp_valid_handle = use_state(|| true);
@@ -85,7 +96,7 @@ pub fn pt2_element_dialog(props: &BoxedElementDialogProps) -> Html {
         .set_sample_time_or_default(props.sample_time.clone())
         .set_t1_time_or_default((*t1_time_handle).parse::<f64>().unwrap_or_default())
         .set_damping_or_default((*damping_handle).parse::<f64>().unwrap_or_default())
-        .set_kp((*kp_handle).parse::<f64>().unwrap_or_default());
+        .set_kp((*kp_handle).parse::<f64>().unwrap_or(1.0));
     info!("PT2 updated: {}", updated);
     props.on_update.emit(Box::new(updated));
 
@@ -119,7 +130,7 @@ pub fn pt2_element_dialog(props: &BoxedElementDialogProps) -> Html {
                 r#ref={t1_time_ref}
                 handle={t1_time_handle}
                 valid_handle={t1_time_valid_handle}
-                validate_function={always_valid}
+                validate_function={t1_time_valid}
 
                 label="Period time equivalent [ms] (1/omega)"
                 required={true}

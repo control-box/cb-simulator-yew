@@ -4,6 +4,10 @@ version = "0.3.0"
 edition = "2021"
 build = "build.rs"
 
+
+[features]
+customized_about = []
+
 [dependencies]
 
 cb-simulation-util = { git = "https://github.com/control-box/cb-simulation-util.git", branch = "main", features = [ "std" ]}

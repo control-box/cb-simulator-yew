@@ -165,7 +165,7 @@ checksum = "d71b6127be86fdcfddb610f7182ac57211d4b18a3e9c82eb2d17662f2227ad6a"
 [[package]]
 name = "cb-simulation-util"
 version = "0.3.0"
-source = "git+https://github.com/control-box/cb-simulation-util.git?branch=main#2fd4e2b8e6589a8a416d019a20f4e54def387131"
+source = "git+https://github.com/control-box/cb-simulation-util.git?branch=main#0e7dbc06fda483d615f0473672ceaa6781d1721d"
 dependencies = [
  "dyn-clone",
  "ndarray",
@@ -207,9 +207,9 @@ dependencies = [
 
 [[package]]
 name = "cfg-if"
-version = "1.0.1"
+version = "1.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9555578bc9e57714c812a1f84e4fc5b4d21fcb063490c624de019f7464c91268"
+checksum = "2fd1289c04a9ea8cb22300a459a72a385d7c73d3259e2ed7dcb2af674838cfa9"
 
 [[package]]
 name = "chrono"

@@ -5,7 +5,7 @@ use core::fmt::Display;
 use std::{borrow::ToOwned, boxed::Box, string::String};
 
 use cb_simulation_util::plant::TypeIdentifier;
-use cb_simulation_util::plant::{pt1::PT1, BoxedTransferTimeDomain, TransferTimeDomain};
+use cb_simulation_util::plant::{pt0::PT0, BoxedTransferTimeDomain, TransferTimeDomain};
 
 #[derive(Debug, Clone)]
 pub struct NamedElement<S: Debug + Display + Clone + Copy + PartialEq + 'static> {
@@ -40,10 +40,10 @@ impl<S: Debug + Display + Clone + Copy + PartialEq> fmt::Display for NamedElemen
 impl<S: Debug + Display + Clone + Copy + PartialEq + 'static + Send + Sync> Default
     for NamedElement<S>
 where
-    PT1<f64>: TransferTimeDomain<S>,
+    PT0<f64>: TransferTimeDomain<S>,
 {
     fn default() -> Self {
-        let default = PT1::<f64>::default();
+        let default = PT0::<f64>::default();
         NamedElement {
             name: default.short_type_name().to_owned(),
             element: Box::new(default) as BoxedTransferTimeDomain<S>,

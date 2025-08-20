@@ -80,7 +80,7 @@ pub fn pt0_element_dialog(props: &BoxedElementDialogProps) -> Html {
     let updated = PT0::<f64>::default()
         .set_sample_time_or_default(props.sample_time.clone())
         .set_t0_time_or_default((*t0_time_handle).parse::<f64>().unwrap_or(1.0))
-        .set_kp((*kp_handle).parse::<f64>().unwrap_or_default());
+        .set_kp((*kp_handle).parse::<f64>().unwrap_or(1.0));
     info!("PT0 updated: {}", updated);
     props.on_update.emit(Box::new(updated));
 
