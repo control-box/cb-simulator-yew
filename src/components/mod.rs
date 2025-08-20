@@ -1,3 +1,4 @@
+pub mod about_git;
 pub mod plot_element;
 pub mod plot_time_signal;
 pub mod theme_toggle;

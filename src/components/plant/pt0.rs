@@ -2,12 +2,13 @@ use input_rs::yew::Input;
 use log::info;
 use yew::prelude::*;
 
+
 use crate::components::plant::BoxedElementDialogProps;
 use crate::plant::registry::{register_element, YewElement};
-use cb_simulation_util::plant::{pt2::PT2, DynTransferTimeDomain, TypeIdentifier};
+use cb_simulation_util::plant::{pt0::PT0, DynTransferTimeDomain, TypeIdentifier};
 
 pub struct YewStep {
-    element: PT2<f64>,
+    element: PT0<f64>,
 }
 
 impl YewElement for YewStep {
@@ -18,7 +19,7 @@ impl YewElement for YewStep {
         sample_time: f64,
     ) -> Html {
         if self.element().short_type_name() == element.short_type_name() {
-            html! { <PT2Dialog element={element} on_update={ on_update } sample_time={ sample_time } /> }
+            html! { <PT0Dialog element={element} on_update={ on_update } sample_time={ sample_time } /> }
         } else {
             html! {}
         }
@@ -36,25 +37,25 @@ impl YewElement for YewStep {
         Box::new(self.element.clone())
     }
 }
-fn yew_pt2_factory() -> Box<dyn YewElement + Sync> {
+fn yew_pt0_factory() -> Box<dyn YewElement + Sync> {
     Box::new(YewStep {
-        element: PT2::<f64>::default(),
+        element: PT0::<f64>::default(),
     })
 }
 
 pub fn register() {
-    info!("Registering YewPT2");
-    register_element(yew_pt2_factory);
+    info!("Registering YewPT0");
+    register_element(yew_pt0_factory);
 }
 
-#[function_component(PT2Dialog)]
-pub fn pt2_element_dialog(props: &BoxedElementDialogProps) -> Html {
+#[function_component(PT0Dialog)]
+pub fn pt0_element_dialog(props: &BoxedElementDialogProps) -> Html {
     // Runtime reflection (downcasting to concrete type)
     // Variable assignment must be done outside the html! macro
-    let updated = if let Some(pt2) = props.element.clone().as_any().downcast_ref::<PT2<f64>>() {
-        pt2.clone()
+    let updated = if let Some(pt0) = props.element.clone().as_any().downcast_ref::<PT0<f64>>() {
+        pt0.clone()
     } else {
-        PT2::<f64>::default()
+        PT0::<f64>::default()
     };
 
     fn always_valid(_s: String) -> bool {
@@ -63,7 +64,7 @@ pub fn pt2_element_dialog(props: &BoxedElementDialogProps) -> Html {
 
     fn positive_valid(s: String) -> bool {
         match s.parse::<f64>() {
-            Ok(value) => value >= 0.0,
+            Ok(value) => value > 0.0 ,
             Err(_) => false,
         }
     }
@@ -72,21 +73,15 @@ pub fn pt2_element_dialog(props: &BoxedElementDialogProps) -> Html {
     let kp_handle = use_state(|| updated.kp.to_string());
     let kp_valid_handle = use_state(|| true);
 
-    let t1_time_ref = use_node_ref();
-    let t1_time_handle = use_state(|| (1.0 / updated.omega).to_string());
-    let t1_time_valid_handle = use_state(|| true);
+    let t0_time_ref = use_node_ref();
+    let t0_time_handle = use_state(|| updated.t0_time.to_string());
+    let t0_time_valid_handle = use_state(|| true);
 
-    let damping_ref = use_node_ref();
-    let damping_handle = use_state(|| updated.damping.to_string());
-    let damping_valid_handle = use_state(|| true);
-
-
-    let updated = PT2::<f64>::default()
+    let updated = PT0::<f64>::default()
         .set_sample_time_or_default(props.sample_time.clone())
-        .set_t1_time_or_default((*t1_time_handle).parse::<f64>().unwrap_or_default())
-        .set_damping_or_default((*damping_handle).parse::<f64>().unwrap_or_default())
+        .set_t0_time_or_default((*t0_time_handle).parse::<f64>().unwrap_or(1.0))
         .set_kp((*kp_handle).parse::<f64>().unwrap_or_default());
-    info!("PT2 updated: {}", updated);
+    info!("PT0 updated: {}", updated);
     props.on_update.emit(Box::new(updated));
 
     html! {
@@ -94,8 +89,8 @@ pub fn pt2_element_dialog(props: &BoxedElementDialogProps) -> Html {
        <form  class="flex flex-row">
             <div class="flex flex-col w-64">
                 <label class="block text-sm mb-2 form-field w-64 text-gray-300 dark:text-gray-700
-                " for="pt2_element_label"> { "Element Type" } </label>
-                <div id="pt2_element_label" class=" text-lg font-bold w-64"> { "PT2 Element"} </div>
+                " for="pt0_element_label"> { "Element Type" } </label>
+                <div id="pt0_element_label" class=" text-lg font-bold w-64"> { "PT0 Element"} </div>
             </div>
             <Input
                 r#type="number"
@@ -115,31 +110,15 @@ pub fn pt2_element_dialog(props: &BoxedElementDialogProps) -> Html {
             />
             <Input
                 r#type="number"
-                name="t1_time"
-                r#ref={t1_time_ref}
-                handle={t1_time_handle}
-                valid_handle={t1_time_valid_handle}
-                validate_function={always_valid}
-
-                label="Period time equivalent [ms] (1/omega)"
-                required={true}
-                error_message="Must be a number greater than sampling rate"
-                class="form-field w-64"
-                label_class="block text-sm mb-2 text-gray-300 dark:text-gray-700"
-                input_class="w-full p-2 border border-gray-400 dark:border-gray-600 rounded"
-                error_class="error-text"
-            />
-            <Input
-                r#type="number"
-                name="damping"
-                r#ref={damping_ref}
-                handle={damping_handle}
-                valid_handle={damping_valid_handle}
+                name="t0_time"
+                r#ref={t0_time_ref}
+                handle={t0_time_handle}
+                valid_handle={t0_time_valid_handle}
                 validate_function={positive_valid}
 
-                label="Damping Factor"
+                label="Time t0 [ms]"
                 required={true}
-                error_message="Must be a number"
+                error_message="Must be a positive number"
                 class="form-field w-64"
                 label_class="block text-sm mb-2 text-gray-300 dark:text-gray-700"
                 input_class="w-full p-2 border border-gray-400 dark:border-gray-600 rounded"

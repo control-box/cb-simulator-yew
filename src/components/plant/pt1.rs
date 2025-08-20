@@ -4,10 +4,10 @@ use yew::prelude::*;
 
 use crate::components::plant::BoxedElementDialogProps;
 use crate::plant::registry::{register_element, YewElement};
-use cb_simulation_util::plant::{pt2::PT2, DynTransferTimeDomain, TypeIdentifier};
+use cb_simulation_util::plant::{pt1::PT1, DynTransferTimeDomain, TypeIdentifier};
 
 pub struct YewStep {
-    element: PT2<f64>,
+    element: PT1<f64>,
 }
 
 impl YewElement for YewStep {
@@ -15,9 +15,10 @@ impl YewElement for YewStep {
         &self,
         element: Box<dyn DynTransferTimeDomain<f64>>,
         on_update: Callback<Box<dyn DynTransferTimeDomain<f64>>>,
+        sample_time: f64,
     ) -> Html {
         if self.element().short_type_name() == element.short_type_name() {
-            html! { <PT2Dialog element={element} on_update={ on_update }/> }
+            html! { <PT1Dialog element={element} on_update={ on_update } sample_time={ sample_time }/> }
         } else {
             html! {}
         }
@@ -35,25 +36,25 @@ impl YewElement for YewStep {
         Box::new(self.element.clone())
     }
 }
-fn yew_pt2_factory() -> Box<dyn YewElement + Sync> {
+fn yew_pt1_factory() -> Box<dyn YewElement + Sync> {
     Box::new(YewStep {
-        element: PT2::<f64>::default(),
+        element: PT1::<f64>::default(),
     })
 }
 
 pub fn register() {
-    info!("Registering YewPT2");
-    register_element(yew_pt2_factory);
+    info!("Registering YewPT1");
+    register_element(yew_pt1_factory);
 }
 
-#[function_component(PT2Dialog)]
-pub fn pt2_element_dialog(props: &BoxedElementDialogProps) -> Html {
+#[function_component(PT1Dialog)]
+pub fn pt1_element_dialog(props: &BoxedElementDialogProps) -> Html {
     // Runtime reflection (downcasting to concrete type)
     // Variable assignment must be done outside the html! macro
-    let updated = if let Some(pt2) = props.element.clone().as_any().downcast_ref::<PT2<f64>>() {
-        pt2.clone()
+    let updated = if let Some(pt1) = props.element.clone().as_any().downcast_ref::<PT1<f64>>() {
+        pt1.clone()
     } else {
-        PT2::<f64>::default()
+        PT1::<f64>::default()
     };
 
     fn always_valid(_s: String) -> bool {
@@ -68,20 +69,11 @@ pub fn pt2_element_dialog(props: &BoxedElementDialogProps) -> Html {
     let t1_time_handle = use_state(|| updated.t1_time.to_string());
     let t1_time_valid_handle = use_state(|| true);
 
-    let t2_time_ref = use_node_ref();
-    let t2_time_handle = use_state(|| updated.t2_time.to_string());
-    let t2_time_valid_handle = use_state(|| true);
-
-    let sample_time_ref = use_node_ref();
-    let sample_time_handle = use_state(|| updated.sample_time.to_string());
-    let sample_time_valid_handle = use_state(|| true);
-
-    let updated = PT2::<f64>::default()
-        .set_sample_time((*sample_time_handle).parse::<f64>().unwrap_or_default())
-        .set_t1_time((*t1_time_handle).parse::<f64>().unwrap_or_default())
-        .set_t2_time((*t2_time_handle).parse::<f64>().unwrap_or_default())
+    let updated = PT1::<f64>::default()
+        .set_sample_time_or_default(props.sample_time.clone())
+        .set_t1_time_or_default((*t1_time_handle).parse::<f64>().unwrap_or_default())
         .set_kp((*kp_handle).parse::<f64>().unwrap_or_default());
-    info!("PT2 updated: {}", updated);
+    info!("PT1 updated: {}", updated);
     props.on_update.emit(Box::new(updated));
 
     html! {
@@ -89,8 +81,8 @@ pub fn pt2_element_dialog(props: &BoxedElementDialogProps) -> Html {
        <form  class="flex flex-row">
             <div class="flex flex-col w-64">
                 <label class="block text-sm mb-2 form-field w-64 text-gray-300 dark:text-gray-700
-                " for="pt2_element_label"> { "Element Type" } </label>
-                <div id="pt2_element_label" class=" text-lg font-bold w-64"> { "PT2 Element"} </div>
+                " for="pt1_element_label"> { "Element Type" } </label>
+                <div id="pt1_element_label" class=" text-lg font-bold w-64"> { "PT1 Element"} </div>
             </div>
             <Input
                 r#type="number"
@@ -124,38 +116,7 @@ pub fn pt2_element_dialog(props: &BoxedElementDialogProps) -> Html {
                 input_class="w-full p-2 border border-gray-400 dark:border-gray-600 rounded"
                 error_class="error-text"
             />
-            <Input
-                r#type="number"
-                name="t2_time"
-                r#ref={t2_time_ref}
-                handle={t2_time_handle}
-                valid_handle={t2_time_valid_handle}
-                validate_function={always_valid}
 
-                label="Time t2 [ms]"
-                required={true}
-                error_message="Must be a number"
-                class="form-field w-64"
-                label_class="block text-sm mb-2 text-gray-300 dark:text-gray-700"
-                input_class="w-full p-2 border border-gray-400 dark:border-gray-600 rounded"
-                error_class="error-text"
-            />
-            <Input
-                r#type="number"
-                name="sample_time"
-                r#ref={sample_time_ref}
-                handle={sample_time_handle}
-                valid_handle={sample_time_valid_handle}
-                validate_function={always_valid}
-
-                label="Sample Time [ms]"
-                required={true}
-                error_message="Must greater than t1_time Time"
-                class="form-field w-64"
-                label_class="block text-sm mb-2 text-gray-300 dark:text-gray-700"
-                input_class="w-full p-2 border border-gray-400 dark:border-gray-600 rounded"
-                error_class="error-text"
-            />
         </form>
         </div>
     }

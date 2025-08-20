@@ -7,7 +7,6 @@ build = "build.rs"
 [dependencies]
 
 cb-simulation-util = { git = "https://github.com/control-box/cb-simulation-util.git", branch = "main", features = [ "std" ]}
-
 accordion-rs = { version = "0.2.6", features = ["yew"] }
 console_error_panic_hook = "0.1.7"
 # for theming

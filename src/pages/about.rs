@@ -1,8 +1,8 @@
 use yew::prelude::*;
+use crate::components::about_git::AboutGit;
 
-const GIT_HASH: &str = env!("GIT_HASH");
-const GIT_TAG: &str = env!("GIT_TAG");
-const CRATE_VERSION: &str = env!("CRATE_VERSION");
+const SIMULATOR_YEW: &str = env!("DEP_CB_SIMULATOR_YEW_VERSION");
+const SIMULATION_UTIL: &str = env!("DEP_CB_SIMULATION_UTIL_VERSION");
 
 #[function_component(About)]
 pub fn about() -> Html {
@@ -24,9 +24,9 @@ pub fn about() -> Html {
             </div>
             <hr class="my-4 h-0.5 border-t-0 bg-gray-400 dark:bg-gray-600" />
             <div class="">
-                <p>{ format!("Git Commit: {}", GIT_HASH) }</p>
-                <p>{ format!("Git Tag: {}", GIT_TAG) }</p>
-                <p>{ format!("Crate Version: {}", CRATE_VERSION) }</p>
+                <p> <AboutGit/> </p>
+                <p>{ format!("Crate cb-simulator-yew: {}", SIMULATOR_YEW) }</p>
+                <p>{ format!("Crate cb-simulation-util: {}", SIMULATION_UTIL) }</p>
             </div>
 
         </div>

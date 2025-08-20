@@ -15,6 +15,8 @@ use crate::plant::named_element::NamedElement;
 #[derive(Properties, PartialEq)]
 pub struct AccordeonElementsProps {
     pub elements: UseStateHandle<Vec<NamedElement<f64>>>,
+    pub sample_time: f64,
+
 }
 
 #[function_component(AccordeonElements)]
@@ -25,7 +27,7 @@ pub fn accordeon_elements(props: &AccordeonElementsProps) -> Html {
 
     // State to hold the new element to add
     let new_handle = use_state_eq(|| {
-        NamedElement::<f64>::default().set_name(format!("PT1-{}", props.elements.len() + 1))
+        NamedElement::<f64>::default().set_name(format!("PT0-{}", props.elements.len() + 1))
     });
     fn always_valid(_s: String) -> bool {
         true
@@ -106,7 +108,7 @@ pub fn accordeon_elements(props: &AccordeonElementsProps) -> Html {
                             <span class="fa-solid fa-minus"></span>
                         </button>
                     </div>
-                    <NamedElementDialog element={element.clone()} on_update={on_update} />
+                    <NamedElementDialog element={element.clone()} on_update={on_update} sample_time={props.sample_time.clone()} />
                 </Item>
             }
         })

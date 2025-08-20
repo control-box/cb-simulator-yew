@@ -1,6 +1,7 @@
 pub mod element;
 pub mod element_select;
 pub mod named_element_dialog;
+pub mod pt0;
 pub mod pt1;
 pub mod pt2;
 
@@ -11,6 +12,8 @@ use yew::prelude::*;
 pub struct BoxedElementDialogProps {
     pub element: BoxedTransferTimeDomain<f64>,
     pub on_update: Callback<BoxedTransferTimeDomain<f64>>,
+    #[prop_or(1.0)]
+    pub sample_time: f64,
 }
 
 // explicit implementation because PartialEq via derive requires the Copy bound

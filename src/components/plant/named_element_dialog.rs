@@ -7,6 +7,8 @@ pub struct NamedElementDialogProps {
     pub element: NamedElement<f64>,
     /// The state handle for managing the value of the input.
     pub on_update: Callback<NamedElement<f64>>,
+    #[prop_or_default]
+    pub sample_time: f64,
 }
 
 #[function_component(NamedElementDialog)]
@@ -42,7 +44,7 @@ pub fn element_dialog(props: &NamedElementDialogProps) -> Html {
                 // }
                 list_factories()
                     .into_iter()
-                    .map(|factory|factory().dialog(element.clone(), on_update.clone()))
+                    .map(|factory|factory().dialog(element.clone(), on_update.clone(), props.sample_time.clone()))
                     .collect::<Html>()
             }
             </div>

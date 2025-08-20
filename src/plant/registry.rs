@@ -9,6 +9,7 @@ pub trait YewElement: Send + Sync {
         &self,
         element: Box<dyn DynTransferTimeDomain<f64>>,
         on_update: Callback<Box<dyn DynTransferTimeDomain<f64>>>,
+        sample_time: f64,
     ) -> Html;
     fn name(&self) -> &str;
     fn render(&self) -> Html;

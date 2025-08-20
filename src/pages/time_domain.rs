@@ -25,7 +25,7 @@ pub fn time_domain() -> Html {
         <>
             <AccordeonTimeRange handle={time_range_handle}/>
             <AccordeonTimeSignals signals={signals_handle} />
-            <AccordeonElements elements={elements_handle} />
+            <AccordeonElements elements={elements_handle} sample_time={time_range.sampling_interval.clone()} />
 
             <AccordeonPlotTimeSignal range={time_range.clone()} signals={signals.clone()} />
             <AccordeonPlotElement range={time_range.clone()} signals={signals} elements={elements} />
