@@ -2,6 +2,7 @@ use yew::prelude::*;
 
 use crate::components::plant::element::AccordeonElements;
 use crate::components::plot_element::AccordeonPlotElement;
+use crate::components::plot_control::AccordeonPlotControl;
 use crate::components::plot_time_signal::AccordeonPlotTimeSignal;
 use crate::components::time_range::AccordeonTimeRange;
 use crate::components::time_signal::time_signal::AccordeonTimeSignals;
@@ -28,7 +29,8 @@ pub fn time_domain() -> Html {
             <AccordeonElements elements={elements_handle} sample_time={time_range.sampling_interval.clone()} />
 
             <AccordeonPlotTimeSignal range={time_range.clone()} signals={signals.clone()} />
-            <AccordeonPlotElement range={time_range.clone()} signals={signals} elements={elements} />
+            <AccordeonPlotElement range={time_range.clone()} signals={signals.clone()} elements={elements.clone()} />
+            <AccordeonPlotControl range={time_range.clone()} signals={signals.clone()} elements={elements.clone()} />
 
         </>
 

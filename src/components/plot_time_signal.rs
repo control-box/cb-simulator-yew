@@ -97,7 +97,7 @@ pub fn accordeon_time_signal(props: &AccordeonPlotTimeSignalProps) -> Html {
         <Accordion
             expand={expand}
             expanded={html! { "Plot Time Signal" } }
-            collapsed={html! { "Plot Time Signal " } }
+            collapsed={html! { "Show Plots of Time Signal " } }
             expanded_class=" bg-gradient-to-r from-blue-700 to-blue-500 text-white p-2 rounded"
             collapsed_class="bg-gradient-to-r from-green-700 to-green-500 text-white p-2 rounded"
             class="w-full p-4 rounded border border-gray-400 dark:border-gray-600"
