@@ -49,6 +49,8 @@ pub fn plotly_time_signal(props: &ControlProps) -> Html {
         let y_open_loop: Array1<f64> = u_open_loop.iter().map(|v| element.transfer_td(*v)).collect();
         (u_open_loop, y_open_loop)
     } else {
+
+        // closed loop - time simulation
         let dim = setpoint.len();
         let mut u = Array1::zeros(dim);
         let mut y = Array1::zeros(dim);

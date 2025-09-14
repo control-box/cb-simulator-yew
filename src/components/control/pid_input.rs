@@ -157,7 +157,7 @@ pub fn pid_controller_limited_input_dialog(props: &PidControllerInputDialogProps
                 valid_handle={off_band_output_valid_handle}
                 validate_function={always_valid}
 
-                label="Maximum Input"
+                label="Off Band Output"
                 required={true}
                 error_message="Must be a not negative number"
                 class="form-field w-32 pl-2 pr-2"
